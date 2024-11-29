@@ -12,11 +12,8 @@ fi
 
 source <(curl -s ${download_url}/tools/init.sh)
 
-
-
 #脚本菜单
 start_linux(){
-    countdown_sleep 2
     clear
     echo -e "\033[42;37m您计算机所在的国家地区:\033[0m \033[32m ${ipdz} \033[0m"
     headers

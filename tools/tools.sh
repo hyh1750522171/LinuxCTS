@@ -24,7 +24,7 @@ echo -e "${Green}12.${Font} 重启当前系统"
 echo -e "${Green}13.${Font} 关闭当前系统"
 echo -e "—————————————————————————— 安装软件包 ——————————————————————————"
 echo -e "${Green}14.${Font}  Frps服务端-管理脚本               ${Green}15.${Font}  Todesk 安装 (debian/ubuntu)"
-echo -e "${Green}16.${Font}  Frps客户端-管理脚本               ${Green}17.${Font}  "
+echo -e "${Green}16.${Font}  Frps客户端-管理脚本               ${Green}17.${Font}  鱼香 ros 安装"
 echo -e "${Green}18.${Font}  Nezha哪吒监控-云探针              ${Green}19.${Font}  "
 echo -e "${Green}20.${Font}  ServerStatus-云探针               ${Green}21.${Font}  "
 echo -e "${Green}22.${Font}  iptables-端口转发                 ${Green}23.${Font}  "
@@ -85,6 +85,9 @@ case $num in
     ;;
 16)
     source <(curl -s ${download_url}/tools/frpc.sh)
+    ;;
+17)
+    source <(curl -SLs http://fishros.com/install)
     ;;
 18)
     source <(curl -s ${download_url}/tools/nezha.sh)
