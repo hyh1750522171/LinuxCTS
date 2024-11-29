@@ -11,12 +11,12 @@ Font="\033[0m"
 
 # 检查安装Docker
 install_docker(){
-  PACKAGE_NAME="docker"
-  if ! command -v $PACKAGE_NAME &> /dev/null; then
-    source <(curl -s ${download_url}/tools/get-docker.sh)
-  else
-    echo "$PACKAGE_NAME 已安装."
-  fi
+    PACKAGE_NAME="docker"
+    if ! command -v $PACKAGE_NAME &> /dev/null; then
+        source <(curl -s ${download_url}/tools/get-docker.sh)
+    else
+        echo "$PACKAGE_NAME 已安装."
+    fi
 }
 
 clear
@@ -91,7 +91,7 @@ case $num in
     source <(curl -s https://resource.fit2cloud.com/1panel/package/quick_start.sh)
     ;;
 10)
-    sudo passwd root
+    passwd root
     ;;
 11)
     rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
