@@ -7,17 +7,12 @@ blue="\033[44;37m"
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
-url=https://ifconfig.icu
 
-#变量引用
-opsy=$( get_opsy )
-cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
-tram=$( free -m | awk '/Mem/ {print $2}' )
-uram=$( free -m | awk '/Mem/ {print $3}' )
-ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
+
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
 
 #全局参数
+url=https://ifconfig.icu
 country=$(curl -s ${url}/country)
 echo -e "${GreenBG}您计算机所在的国家地区:${Font} ${Green} ${ipdz} ${Font}"
 if [[ $country == *"China"* ]]; then
@@ -49,6 +44,16 @@ sys_install(){
     fi
 }
 
+# 定义函数，使其可以接受参数
+function gpt_style_output() {
+    local text="$1"
+    for ((i = 0; i < ${#text}; i++)); do
+        echo -n "${text:$i:1}"
+        sleep 0.05
+    done
+    echo ""
+}
+
 #核心文件
 get_opsy(){
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
@@ -66,6 +71,12 @@ install_docker(){
   fi
 }
 
+#变量引用
+opsy=$( get_opsy )
+cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
+tram=$( free -m | awk '/Mem/ {print $2}' )
+uram=$( free -m | awk '/Mem/ {print $3}' )
+ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
 
 #脚本菜单
 start_linux(){
@@ -79,7 +90,8 @@ start_linux(){
     echo -e "操作系统${Green} $opsy ${Font}CPU${Green} $cores ${Font}核 系统内存${Green} $tram ${Font}MB"
     echo -e "IP地址${Green} $ipaddr $ipdz ${Font}"
     echo -e "====================================================="
-    echo -e "=  ${Green}11${Font}  VPS信息和性能测试  VPS information test  "
+    # echo -en "=  ${Green}11${Font}  " && gpt_style_output 'VPS信息和性能测试 VPS information test'
+    echo -e "=  ${Green}11${Font}  VPS信息和性能测试 VPS information test" 
     echo -e "=  ${Green}12${Font}  Bench系统性能测试  Bench performance test  "
     echo -e "=  ${Green}13${Font}  Linux系统实用功能  Linux utility function  "
     echo -e "=  ${Green}14${Font}  Linux路由追踪检测  Linux traceroute test  "
