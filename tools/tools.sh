@@ -1,35 +1,10 @@
 #!/usr/bin/env bash
 
-Green="\033[32m"
-Red="\033[31m"
-YellowBG="\033[43;37m"
-Yellow="\033[33m"
-blue="\033[44;37m"
-GreenBG="\033[42;37m"
-RedBG="\033[41;37m"
-Font="\033[0m"
-
-# 检查安装Docker
-install_docker(){
-  PACKAGE_NAME="docker"
-  if ! command -v $PACKAGE_NAME &> /dev/null; then
-    source <(curl -s ${download_url}/tools/get-docker.sh)
-  else
-    echo "$PACKAGE_NAME 已安装."
-  fi
-}
-
 clear
 #===============================#
 #       linux系统实用功能       #
 #===============================#
-echo -e "${blue}=====================================================${Font}"
-echo -e "${blue}=             LinuxCTS - 综合Linux脚本              =${Font}"
-echo -e "${blue}=                                                   =${Font}"
-echo -e "${blue}=                当前版本 V2.6                      =${Font}"
-echo -e "${blue}=            更新时间 2024年11月29日                =${Font}"
-echo -e "${blue}=                                                   =${Font}"
-echo -e "${blue}=====================================================${Font}"
+headers
 echo -e "—————————————————————————— 安装软件源 ——————————————————————————"
 echo -e "${Green}1.${Font} centos添加epel软件源"
 echo -e "${Green}2.${Font} ubuntu添加epel软件源"
@@ -91,7 +66,7 @@ case $num in
     source <(curl -s https://resource.fit2cloud.com/1panel/package/quick_start.sh)
     ;;
 10)
-    sudo passwd root
+    passwd root
     ;;
 11)
     rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
