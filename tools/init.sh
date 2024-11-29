@@ -13,8 +13,6 @@ Font="\033[0m"
 shanshuo1="\033[5m"
 shanshuo2="\033[0m"
 
-
-
 #检查账号
 check_root(){
 	if [[ $EUID != 0 ]];then
