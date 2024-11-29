@@ -9,9 +9,17 @@ RedBG="\033[41;37m"
 Font="\033[0m"
 url=https://ifconfig.icu
 
+#变量引用
+opsy=$( get_opsy )
+cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
+tram=$( free -m | awk '/Mem/ {print $2}' )
+uram=$( free -m | awk '/Mem/ {print $3}' )
+ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
+ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
+
 #全局参数
 country=$(curl -s ${url}/country)
-echo -e "${Green}您计算机所在的国家是:${country} ${Font}"
+echo -e "${GreenBG}您计算机所在的国家地区:${Font} ${Green} ${ipdz} ${Font}"
 if [[ $country == *"China"* ]]; then
     download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
 else
@@ -23,6 +31,7 @@ fi
 check_root(){
 	if [[ $EUID != 0 ]];then
 		echo -e "${RedBG}当前不是ROOT账号，建议更换ROOT账号使用。${Font}"
+		echo -e "${Yellow}不要是用 sudo 执行脚本，直接使用 ROOT 账号执行。${Font}"
 		sleep 5
 	else
 		echo -e "${GreenBG}ROOT账号权限检查通过，祝你使用愉快！${Font}"
@@ -57,14 +66,6 @@ install_docker(){
   fi
 }
 
-#变量引用
-opsy=$( get_opsy )
-cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
-tram=$( free -m | awk '/Mem/ {print $2}' )
-uram=$( free -m | awk '/Mem/ {print $3}' )
-ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
-ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
-
 
 #脚本菜单
 start_linux(){
@@ -97,6 +98,7 @@ start_linux(){
     echo -e "=  ${Green}36${Font}  Docker 安装  Docker install  "
     echo -e "=  ${Green}37${Font}  Nvidia显卡驱动安装  nvidia-smi install  "
     echo -e "=  ${Green}38${Font}  Nvidia-Docker安装  nvidia-docker install  "
+    echo -e "=  ${Green}39${Font}  Miniconda安装  Miniconda install  "
     echo -e "="
     echo -e "=  ${Green}99${Font}  退出当前脚本  Exit the current script  "
     echo -e "====================================================="
@@ -152,8 +154,12 @@ start_linux(){
     37)
         source <(curl -s ${download_url}/tools/nvidia-driver.sh)
         ;;
-    37)
+    38)
         source <(curl -s ${download_url}/tools/nvidia-docker.sh)
+        ;;
+    39)
+        echo -e "${Yellow} 安装miniconda,首先需要您退出到普通用户使用下面连接一键安装....  ${Font}"
+        echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/tools/nvidia-docker.sh) ${Font}"
         ;;
     99)
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
