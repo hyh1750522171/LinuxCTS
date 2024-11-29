@@ -7,10 +7,16 @@ blue="\033[44;37m"
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
-
+url=https://ifconfig.icu
 #全局参数
-download="wget -N --no-check-certificate"
-#download="curl -O -L"
+country=$(curl -s ${url}/country)
+echo -e "${Green}您计算机所在的国家是:${country} ${Font}"
+if [[ $country == *"China"* ]]; then
+    download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
+else
+    download_url=https://raw.githubusercontent.com/hyh1750522171/LinuxCTS/main
+fi
+
 
 #检查账号
 check_root(){
@@ -85,49 +91,49 @@ start_linux(){
     read num
     case $num in
     11)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/xncs.sh)
+        source <(curl -s ${download_url}/tools/xncs.sh)
         ;;
     12)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/bench.sh)
+        source <(curl -s ${download_url}/tools/bench.sh)
         ;;
     13)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools.sh)
+        source <(curl -s ${download_url}/tools.sh)
         ;;
     14)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/tools/lyzz.sh)
+        source <(curl -s ${download_url}/tools/tools/lyzz.sh)
         ;;
     21)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/swap.sh)
+        source <(curl -s ${download_url}/tools/swap.sh)
         ;;
     22)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/dns.sh)
+        source <(curl -s ${download_url}/tools/dns.sh)
         ;;
     23)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/check.sh)
+        source <(curl -s ${download_url}/check.sh)
         ;;
     24)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tcp.sh)
+        source <(curl -s ${download_url}/tcp.sh)
         ;;
     25)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/net-install.sh)
+        source <(curl -s ${download_url}/tools/net-install.sh)
         ;;
     31)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/frps.sh)
+        source <(curl -s ${download_url}/tools/frps.sh)
         ;;
     32)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/frpc.sh)
+        source <(curl -s ${download_url}/tools/frpc.sh)
         ;;
     33)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/nezha.sh)
+        source <(curl -s ${download_url}/tools/nezha.sh)
         ;;
     34)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/status.sh)
+        source <(curl -s ${download_url}/status.sh)
         ;;
     35)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/dkzf.sh)
+        source <(curl -s ${download_url}/tools/dkzf.sh)
         ;;
     36)
-        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/get-docker.sh)
+        source <(curl -s ${download_url}/tools/get-docker.sh)
         ;;
     99)
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
