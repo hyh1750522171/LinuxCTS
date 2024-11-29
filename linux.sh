@@ -6,7 +6,7 @@ ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
 #全局参数
 url=https://ifconfig.icu
 country=$(curl -s ${url}/country)
-echo -e "${GreenBG}您计算机所在的国家地区:${Font} ${Green} ${ipdz} ${Font}"
+echo -e "\033[42;37m您计算机所在的国家地区:\033[0m \033[32m ${ipdz} \033[0m"
 if [[ $country == *"China"* ]]; then
     download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
 else
