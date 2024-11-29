@@ -23,15 +23,15 @@ echo -e "${Green}11.${Font} 修改时间为中国"
 echo -e "${Green}12.${Font} 重启当前系统"
 echo -e "${Green}13.${Font} 关闭当前系统"
 echo -e "—————————————————————————— 安装软件包 ——————————————————————————"
-echo -e "${Green}14${Font}  Frps服务端-管理脚本               ${Green}15${Font}  Todesk 安装 (debian/ubuntu)"
-echo -e "${Green}16${Font}  Frps客户端-管理脚本               ${Green}17${Font}  "
-echo -e "${Green}18${Font}  Nezha哪吒监控-云探针              ${Green}19${Font}  "
-echo -e "${Green}20${Font}  ServerStatus-云探针               ${Green}21${Font}  "
-echo -e "${Green}22${Font}  iptables-端口转发                 ${Green}23${Font}  "
-echo -e "${Green}24${Font}  Docker 安装                       ${Green}25${Font}  "
-echo -e "${Green}26${Font}  Nvidia显卡驱动安装                ${Green}27${Font}  "
-echo -e "${Green}28${Font}  Nvidia-Docker安装                 ${Green}29${Font}  "
-echo -e "${Green}30${Font}  Miniconda安装                     ${Green}31${Font}  "
+echo -e "${Green}14.${Font}  Frps服务端-管理脚本               ${Green}15.${Font}  Todesk 安装 (debian/ubuntu)"
+echo -e "${Green}16.${Font}  Frps客户端-管理脚本               ${Green}17.${Font}  "
+echo -e "${Green}18.${Font}  Nezha哪吒监控-云探针              ${Green}19.${Font}  "
+echo -e "${Green}20.${Font}  ServerStatus-云探针               ${Green}21.${Font}  "
+echo -e "${Green}22.${Font}  iptables-端口转发                 ${Green}23.${Font}  "
+echo -e "${Green}24.${Font}  Docker 安装                       ${Green}25.${Font}  "
+echo -e "${Green}26.${Font}  Nvidia显卡驱动安装                ${Green}27.${Font}  "
+echo -e "${Green}28.${Font}  Nvidia-Docker安装                 ${Green}29.${Font}  "
+echo -e "${Green}30.${Font}  Miniconda安装                     ${Green}31.${Font}  "
 echo -e "—————————————————————————— 附加脚本 ——————————————————————————"
 echo -e "${Green}99.${Font} 返回综合脚本"
 echo -e "${Green}0.${Font} 退出当前脚本\n"
@@ -106,7 +106,7 @@ case $num in
     ;;
 30)
     echo -e "${Yellow} 安装miniconda,首先需要您退出到普通用户使用下面连接一键安装....  ${Font}"
-    echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/tools/nvidia-docker.sh) ${Font}"
+    echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/tools/miniconda.sh) ${Font}"
     ;;
 99)
     # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh
