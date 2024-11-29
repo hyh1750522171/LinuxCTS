@@ -54,6 +54,16 @@ function gpt_style_output() {
     echo ""
 }
 
+# 检查安装Docker
+install_docker(){
+    PACKAGE_NAME="docker"
+    if ! command -v $PACKAGE_NAME &> /dev/null; then
+        source <(curl -s ${download_url}/tools/get-docker.sh)
+    else
+        echo "$PACKAGE_NAME 已安装."
+    fi
+}
+
 #核心文件
 get_opsy(){
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
@@ -75,10 +85,12 @@ headers(){
     echo -e "${blue}=                                                   =${Font}"
     echo -e "${blue}=                当前版本 V2.6                      =${Font}"
     echo -e "${blue}=            更新时间 2024年11月29日                =${Font}"
+    echo -e "${blue}=              bug 反馈 ⬇⬇⬇⬇⬇⬇😳                    =${Font}"
+    echo -e "${blue}= https://github.com/hyh1750522171/LinuxCTS/issues  =${Font}"
     echo -e "${blue}=                                                   =${Font}"
     echo -e "${blue}=====================================================${Font}"
     echo -e "操作系统${Green} $opsy ${Font}CPU${Green} $cores ${Font}核 系统内存${Green} $tram ${Font}MB"
     echo -e "IP地址${Green} $ipaddr $ipdz ${Font}"
     echo -e "====================================================="
 }
-
+# headers 
