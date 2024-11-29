@@ -37,7 +37,6 @@ install_todesk(){
     apt install /tmp/${package}
     case $DISTRO in
     "ubuntu")
-        source <(curl -s ${download_url}/tools/xncs.sh)
         case $VERSION in
         "24.04")
             sed -i 's/#WaylandEnable=false/WaylandEnable=false/' /etc/gdm3/custom.conf
