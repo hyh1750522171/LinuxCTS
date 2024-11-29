@@ -126,7 +126,7 @@ start_linux(){
         source <(curl -s ${download_url}/tools/bench.sh)
         ;;
     13)
-        source <(curl -s ${download_url}/tools.sh)
+        source <(curl -s ${download_url}/tools/tools.sh)
         ;;
     14)
         source <(curl -s ${download_url}/tools/tools/lyzz.sh)
