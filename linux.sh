@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+clear
+
 Green="\033[32m"
 Red="\033[31m"
 Yellow="\033[43;37m"
@@ -28,9 +30,6 @@ check_root(){
 		echo -e "${RedBG}当前不是ROOT账号，建议更换ROOT账号使用。${Font}"
 		echo -e "${Yellow}不要是用 sudo 执行脚本，直接使用 ROOT 账号执行。${Font}"
 		sleep 5
-	else
-		echo -e "${GreenBG}ROOT账号权限检查通过，祝你使用愉快！${Font}"
-		sleep 1
 	fi
 }
 
@@ -39,8 +38,6 @@ sys_install(){
     if ! type wget >/dev/null 2>&1; then
         echo -e "${RedBG}wget 未安装，准备安装！${Font}"
 	    apt-get install wget -y || yum install wget -y
-    else
-        echo -e "${GreenBG}wget 已安装，继续操作！${Font}"
     fi
 }
 
@@ -183,9 +180,7 @@ start_linux(){
 }
 
 #脚本启动
-echo
 check_root
-echo
 sys_install
 echo
 start_linux
