@@ -757,10 +757,11 @@ Install_caddy() {
   if [[ "${caddy_yn}" == [Yy] ]]; then
     caddy_file="/etc/caddy/Caddyfile" # Where is the default Caddyfile specified in Archlinux?
     [[ ! -e /usr/bin/caddy ]] && {
+      # https://caddyserver.com/docs/install
       if [[ ${release} == "debian" ]]; then
         apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
-        curl -1sLf "https://dl.cloudsmith.io/public/caddy/stable/gpg.key" | tee /etc/apt/trusted.gpg.d/caddy-stable.asc
-        curl -1sLf "https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt" | tee /etc/apt/sources.list.d/caddy-stable.list
+        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
         apt update && apt install caddy
       elif [[ ${release} == "centos" ]]; then
         yum install yum-plugin-copr -y
@@ -1045,8 +1046,7 @@ Update_Shell() {
     rm -rf /usr/lib/systemd/system/status-server.service
     Service_Server_Status_server
   fi
-  # wget -N --no-check-certificate "${link_prefix}/status.sh" && chmod +x status.sh
-  source <(curl -s  "${link_prefix}/status.sh")
+  wget -N --no-check-certificate "${link_prefix}/status.sh" && chmod +x status.sh
   echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 menu_client() {

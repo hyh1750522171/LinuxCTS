@@ -138,10 +138,10 @@ start_linux(){
         source <(curl -s ${download_url}/tools/dns.sh)
         ;;
     23)
-        source <(curl -s ${download_url}/check.sh)
+        source <(curl -s ${download_url}/tools/check.sh)
         ;;
     24)
-        source <(curl -s ${download_url}/tcp.sh)
+        source <(curl -s ${download_url}/tools/tcp.sh)
         ;;
     25)
         source <(curl -s ${download_url}/tools/net-install.sh)
@@ -156,7 +156,7 @@ start_linux(){
         source <(curl -s ${download_url}/tools/nezha.sh)
         ;;
     34)
-        source <(curl -s ${download_url}/status.sh)
+        source <(curl -s ${download_url}/tools/status.sh)
         ;;
     35)
         source <(curl -s ${download_url}/tools/dkzf.sh)
