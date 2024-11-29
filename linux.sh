@@ -8,6 +8,7 @@ GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
 url=https://ifconfig.icu
+
 #全局参数
 country=$(curl -s ${url}/country)
 echo -e "${Green}您计算机所在的国家是:${country} ${Font}"
@@ -46,6 +47,16 @@ get_opsy(){
     [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
 }
 
+# 检查安装Docker
+install_docker(){
+  PACKAGE_NAME="docker"
+  if ! command -v $PACKAGE_NAME &> /dev/null; then
+    source <(curl -s ${download_url}/tools/get-docker.sh)
+  else
+    echo "$PACKAGE_NAME 已安装."
+  fi
+}
+
 #变量引用
 opsy=$( get_opsy )
 cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
@@ -53,6 +64,7 @@ tram=$( free -m | awk '/Mem/ {print $2}' )
 uram=$( free -m | awk '/Mem/ {print $3}' )
 ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
+
 
 #脚本菜单
 start_linux(){
@@ -83,6 +95,8 @@ start_linux(){
     echo -e "=  ${Green}34${Font}  ServerStatus-云探针  ServerStatus probe  "
     echo -e "=  ${Green}35${Font}  iptables-端口转发  Iptables port forwarding  "
     echo -e "=  ${Green}36${Font}  Docker 安装  Docker install  "
+    echo -e "=  ${Green}37${Font}  Nvidia显卡驱动安装  nvidia-smi install  "
+    echo -e "=  ${Green}38${Font}  Nvidia-Docker安装  nvidia-docker install  "
     echo -e "="
     echo -e "=  ${Green}99${Font}  退出当前脚本  Exit the current script  "
     echo -e "====================================================="
@@ -133,7 +147,13 @@ start_linux(){
         source <(curl -s ${download_url}/tools/dkzf.sh)
         ;;
     36)
-        source <(curl -s ${download_url}/tools/get-docker.sh)
+        install_docker
+        ;;
+    37)
+        source <(curl -s ${download_url}/tools/nvidia-driver.sh)
+        ;;
+    37)
+        source <(curl -s ${download_url}/tools/nvidia-docker.sh)
         ;;
     99)
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
