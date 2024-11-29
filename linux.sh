@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-clear
-
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
 #全局参数
 url=https://ifconfig.icu
 country=$(curl -s ${url}/country)
-echo -e "\033[42;37m您计算机所在的国家地区:\033[0m \033[32m ${ipdz} \033[0m"
 if [[ $country == *"China"* ]]; then
     download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
 else
@@ -16,11 +13,15 @@ fi
 source <(curl -s ${download_url}/tools/init.sh)
 
 
+
 #脚本菜单
 start_linux(){
+    countdown_sleep 2
+    clear
+    echo -e "\033[42;37m您计算机所在的国家地区:\033[0m \033[32m ${ipdz} \033[0m"
     headers
     # echo -en "=  ${Green}11${Font}  " && gpt_style_output 'VPS信息和性能测试 VPS information test'
-    echo -e "=  ${Green}11${Font}  VPS信息和性能测试 VPS information test" 
+    echo -e "=  ${Green}11${Font}  Linux信息和性能测试 VPS information test" 
     echo -e "=  ${Green}12${Font}  Bench系统性能测试  Bench performance test  "
     echo -e "=  ${Green}13${Font}  Linux常用工具安装  Linux utility function  "
     echo -e "=  ${Green}14${Font}  Linux路由追踪检测  Linux traceroute test  "
@@ -47,7 +48,7 @@ start_linux(){
         source <(curl -s ${download_url}/tools/tools.sh)
         ;;
     14)
-        source <(curl -s ${download_url}/tools/tools/lyzz.sh)
+        source <(curl -s ${download_url}/tools/lyzz.sh)
         ;;
     21)
         source <(curl -s ${download_url}/tools/swap.sh)
@@ -68,7 +69,10 @@ start_linux(){
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
         ;;
     *)
-        echo -e "\n${RedBG}未找到该功能！正在退出！${Font}\n" && exit
+        clear
+        echo -e "${Error}:请输入正确数字 [0-99], 5秒后刷新"
+        countdown_sleep 5
+        start_linux
         ;;
     esac
 }
