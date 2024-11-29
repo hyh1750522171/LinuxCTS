@@ -14,17 +14,6 @@ shanshuo1="\033[5m"
 shanshuo2="\033[0m"
 
 
-ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
-#全局参数
-url=https://ifconfig.icu
-country=$(curl -s ${url}/country)
-echo -e "${GreenBG}您计算机所在的国家地区:${Font} ${Green} ${ipdz} ${Font}"
-if [[ $country == *"China"* ]]; then
-    download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
-else
-    download_url=https://raw.githubusercontent.com/hyh1750522171/LinuxCTS/main
-fi
-
 
 #检查账号
 check_root(){
