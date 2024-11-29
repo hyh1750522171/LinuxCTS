@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 
 clear
+
+ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
+#全局参数
+url=https://ifconfig.icu
+country=$(curl -s ${url}/country)
+echo -e "${GreenBG}您计算机所在的国家地区:${Font} ${Green} ${ipdz} ${Font}"
+if [[ $country == *"China"* ]]; then
+    download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
+else
+    download_url=https://raw.githubusercontent.com/hyh1750522171/LinuxCTS/main
+fi
+
 source <(curl -s ${download_url}/tools/init.sh)
 
 
