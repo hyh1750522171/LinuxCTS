@@ -4,11 +4,14 @@ clear
 
 Green="\033[32m"
 Red="\033[31m"
-Yellow="\033[43;37m"
+YellowBG="\033[43;37m"
+Yellow="\033[33m"
 blue="\033[44;37m"
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
+shanshuo1="\033[5m"
+shanshuo2="\033[0m"
 
 
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
@@ -28,7 +31,7 @@ fi
 check_root(){
 	if [[ $EUID != 0 ]];then
 		echo -e "${RedBG}当前不是ROOT账号，建议更换ROOT账号使用。${Font}"
-		echo -e "${Yellow}不要是用 sudo 执行脚本，直接使用 ROOT 账号执行。${Font}"
+		echo -e "${Yellow}不要是用 sudo 执行脚本，直接使用 ROOT 账号执行。${Font} "
 		sleep 5
         exit 1
 	fi
