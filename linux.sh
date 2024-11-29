@@ -76,6 +76,7 @@ start_linux(){
     echo -e "=  ${Green}33${Font}  Nezha哪吒监控-云探针  Nezha monitoring probe  "
     echo -e "=  ${Green}34${Font}  ServerStatus-云探针  ServerStatus probe  "
     echo -e "=  ${Green}35${Font}  iptables-端口转发  Iptables port forwarding  "
+    echo -e "=  ${Green}36${Font}  Docker 安装  Docker install  "
     echo -e "="
     echo -e "=  ${Green}99${Font}  退出当前脚本  Exit the current script  "
     echo -e "====================================================="
@@ -124,6 +125,9 @@ start_linux(){
         ;;
     35)
         source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/dkzf.sh)
+        ;;
+    36)
+        source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/get-docker.sh)
         ;;
     99)
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
