@@ -69,7 +69,7 @@ install_spark(){
 # 检查是否安装并运行了GNOME桌面环境
 gnome_check=$(ps -ef | grep gnome-session | grep -v grep)
 if [ -n "$gnome_check" ]; then
-    install_todesk
+    install_spark
     # 这里可以添加你想要在有GNOME桌面环境时执行的具体操作
     exit 0
 else
