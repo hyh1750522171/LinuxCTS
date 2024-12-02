@@ -53,8 +53,10 @@ install_spark(){
                 apt install -y /tmp/${package}
                 echo "星火应用商店安装完成"
                 ;;
+            *)
+                echo "${Red}不支持当前系统版本的安装，请检查系统版本是否为 Ubuntu 20.04、22.04 或 24.04。${Font}"
+                ;;
             esac
-            echo "当前系统不支持安装星火应用商店.."
             ;;
         esac
         # systemctl start todeskd.service
