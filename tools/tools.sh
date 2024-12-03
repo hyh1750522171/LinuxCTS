@@ -9,6 +9,7 @@ echo -e "———————————————————————�
 echo -e "${Green}1.${Font} centos添加epel软件源"
 echo -e "${Green}2.${Font} ubuntu添加epel软件源"
 echo -e "${Green}3.${Font} debian添加epel软件源"
+echo -e "${Green}31.${Font} centos7 更换base源"
 echo -e "—————————————————————————— 系统升级 ——————————————————————————"
 echo -e "${Green}4.${Font} centos升级软件和系统"
 echo -e "${Green}5.${Font} ubuntu升级软件和系统"
@@ -113,6 +114,9 @@ case $num in
 30)
     echo -e "${Yellow} 安装miniconda,首先需要您退出到普通用户使用下面连接一键安装....  ${Font}"
     echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/tools/miniconda.sh) ${Font}"
+    ;;
+31)
+    source <(curl -s ${download_url}/tools/clean_and_set_mirror_centos7.sh)
     ;;
 99)
     # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh

@@ -28,7 +28,6 @@ start_linux(){
     echo -e "=  ${Green}23${Font}  流媒体区域限制测试  Streaming media testing  "
     echo -e "=  ${Green}24${Font}  Linux系统bbr-tcp加速  System bbr-tcp speed up  "
     echo -e "=  ${Green}25${Font}  Linux网络重装dd系统  Network reloading system  "
-    echo -e "=  ${Green}26${Font}  CentOS 7 更换Aliyun的源  Modify Mirror For CentOS7  "
     echo -e "="
     echo -e "=  ${Green}99${Font}  退出当前脚本  Exit the current script  "
     echo -e "====================================================="
@@ -62,9 +61,6 @@ start_linux(){
         ;;
     25)
         source <(curl -s ${download_url}/tools/net-install.sh)
-        ;;
-    26)
-        source <(curl -s ${download_url}/tools/clean_and_set_mirror_centos7.sh)
         ;;
     99)
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
