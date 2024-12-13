@@ -12,9 +12,10 @@ shanshuo1="\033[5m"
 shanshuo2="\033[0m"
 
 Version=4.3.3.1
-package="spark-store_${Version}-fix2_amd64.deb" 
+package="spark-store_${Version}-fix3_amd64.deb" 
 package_url=https://gitee.com/spark-store-project/spark-store/releases/download/4.3.3.1-fix2
 yilai_url=https://gitee.com/muaimingjun/LinuxCTS/releases/download/v1.0.1/all.zip
+
 
 OS="$(uname)"
 case $OS in
@@ -53,8 +54,10 @@ install_spark(){
                 apt install -y /tmp/${package}
                 echo "星火应用商店安装完成"
                 ;;
+            *)
+                echo "${Red}不支持当前系统版本的安装，请检查系统版本是否为 Ubuntu 20.04、22.04 或 24.04。${Font}"
+                ;;
             esac
-            echo "当前系统不支持安装星火应用商店.."
             ;;
         esac
         # systemctl start todeskd.service
