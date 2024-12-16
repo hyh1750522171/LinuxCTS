@@ -112,11 +112,14 @@ case $num in
     source <(curl -s ${download_url}/tools/nvidia-driver.sh)
     ;;
 28)
-    source <(curl -s https://www.geekery.cn/sh/nvidia/nvidia-driver-deploy.sh)
+    source <(curl -s ${download_url}/tools/nvidia-docker.sh)
     ;;
 30)
     echo -e "${Yellow} 安装miniconda,首先需要您退出到普通用户使用下面连接一键安装....  ${Font}"
     echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/tools/miniconda.sh) ${Font}"
+    ;;
+31)
+    source <(curl -s ${download_url}/tools/clean_and_set_mirror_centos7.sh)
     ;;
 99)
     # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh
