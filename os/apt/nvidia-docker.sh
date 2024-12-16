@@ -5,6 +5,14 @@ set -euxo pipefail
 export DEBIAN_FRONTEND=noninteractive
 sudo dpkg --set-selections <<< "cloud-init install" || true
 
+country=$(curl -s https://ifconfig.icu/country)
+if [[ $country == *"China"* ]]; then
+    hub_docker_url=docker.ketches.cn/
+    # judge "设置Docker镜点 "
+else
+    hub_docker_url=docker.io/
+fi
+
 # Set Gloabal Variables
     # Detect OS
         OS="$(uname)"
@@ -17,7 +25,7 @@ sudo dpkg --set-selections <<< "cloud-init install" || true
                     VERSION=$VERSION_ID
                 else
                     echo "Your Linux distribution is not supported."
-                    exit 1
+                    exit
                 fi
                 ;;
         esac
@@ -142,7 +150,7 @@ else
 
                     *)
                         echo "This version of Ubuntu is not supported in this script."
-                        exit 1
+                        exit 
                         ;;
                 esac
                 ;;
@@ -163,14 +171,14 @@ else
 
                     *)
                         echo "This version of Debian is not supported in this script."
-                        exit 1
+                        exit
                         ;;
                 esac
                 ;;
 
             *)
                         echo "Your Linux distribution is not supported."
-                        exit 1
+                        exit 
                         ;;
 
             "Windows_NT")
@@ -183,13 +191,13 @@ else
                     sudo apt-get -y install cuda
                 else
                     echo "This bash script can't be executed on Windows directly unless using WSL with Ubuntu. For other scenarios, consider using a PowerShell script or manual installation."
-                    exit 1
+                    exit 
                 fi
                 ;;
 
             *)
                 echo "Your OS is not supported."
-                exit 1
+                exit
                 ;;
         esac
 	echo "System will now reboot !!! Please re-run this script after restart to complete installation !"
@@ -202,46 +210,11 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
     nvidia-smi
 fi
 
-# Check if Docker is installed
-if command -v docker &>/dev/null; then
-    echo "Docker is already installed."
-else
-    echo "Docker is not installed. Proceeding with installations..."
-    # Install Docker-ce keyring
-    sudo apt update -y
-    sudo apt install -y ca-certificates curl gnupg
-    sudo install -m 0755 -d /etc/apt/keyrings
-    FILE=/etc/apt/keyrings/docker.gpg
-    if [ -f "$FILE" ]; then
-        sudo rm "$FILE"
-    fi
-    curl -fsSL https://download-docker.geekery.cn/linux/ubuntu/gpg | sudo gpg --dearmor -o "$FILE"
-    sudo chmod a+r /etc/apt/keyrings/docker.gpg
-
-    # Add Docker-ce repository to Apt sources and install
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download-docker.geekery.cn/linux/ubuntu \
-      $(. /etc/os-release; echo "$VERSION_CODENAME") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt update -y
-    sudo apt -y install docker-ce
-fi
-
-# Check if docker-compose is installed
-if command -v docker-compose &>/dev/null; then
-    echo "Docker-compose is already installed."
-else
-    echo "Docker-compose is not installed. Proceeding with installations..."
-
-    # Install docker-compose subcommand
-    sudo apt -y install docker-compose-plugin
-    sudo ln -sv /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
-    docker-compose --version
-fi
+install_docker
 
 # Test / Install nvidia-docker
 if [[ ! -z "$NVIDIA_PRESENT" ]]; then
-    if sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi &>/dev/null; then
+    if sudo docker run --rm --gpus all ${hub_docker_url}nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi &>/dev/null; then
         echo "nvidia-docker is enabled and working. Exiting script."
     else
         echo "nvidia-docker does not seem to be enabled. Proceeding with installations..."
@@ -250,8 +223,10 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
         curl -s -L https://nvidia-docker.geekery.cn/nvidia-docker/gpgkey | sudo apt-key add
         curl -s -L https://nvidia-docker.geekery.cn/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
         sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+        judge "nvidia-container-toolkit 安装 "
         sudo systemctl restart docker 
-        sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi
+        judge "重启docker "
+        sudo docker run --rm --gpus all ${hub_docker_url}nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi
     fi
 fi
 sudo apt-mark hold nvidia* libnvidia*
@@ -262,36 +237,41 @@ newgrp docker || true
 # Workaround for NVIDIA Docker Issue
 echo "Applying workaround for NVIDIA Docker issue as per https://github.com/NVIDIA/nvidia-docker/issues/1730"
 # Summary of issue and workaround:
-# The issue arises when the host performs daemon-reload, which may cause containers using systemd to lose access to NVIDIA GPUs.
-# To check if affected, run `sudo systemctl daemon-reload` on the host, then check GPU access in the container with `nvidia-smi`.
-# If affected, proceed with the workaround below.
 
-# Workaround Steps:
-# Disable cgroups for Docker containers to prevent the issue.
-# Edit the Docker daemon configuration.
 sudo mkdir -pv /etc/docker/ || true
 
-sudo bash -c 'cat <<EOF > /etc/docker/daemon.json
-{
-   "runtimes": {
-       "nvidia": {
-           "path": "nvidia-container-runtime",
-           "runtimeArgs": []
-       }
-   },
-   "exec-opts": ["native.cgroupdriver=cgroupfs"]
-}
-EOF'
-
-country=$(curl -s https://ifconfig.icu/country)
 echo "你所在的国家是:${country}"
 if [[ $country == *"China"* ]]; then
-    source <(curl -Ss https://www.geekery.cn/sh/docker/set_docker_mirror.sh)
-    echo "设置Docker镜点成功。"
+    sudo bash -c 'cat <<EOF > /etc/docker/daemon.json
+    {
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "exec-opts": ["native.cgroupdriver=cgroupfs"],
+    "registry-mirrors": ["https://docker.ketches.cn/"]
+    }
+    EOF'
+    sudo systemctl daemon-reload
+
+    # judge "设置Docker镜点 "
 else
+    sudo bash -c 'cat <<EOF > /etc/docker/daemon.json
+    {
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "exec-opts": ["native.cgroupdriver=cgroupfs"]
+    }
+    EOF'
     echo "当前国家不是China，未执行Docker镜点设置。"
 fi
 
 # Restart Docker to apply changes.
 sudo systemctl restart docker
-echo "Workaround applied. Docker has been configured to use 'cgroupfs' as the cgroup driver."
+judge "重启docker "

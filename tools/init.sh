@@ -44,6 +44,7 @@ sys_install(){
     if ! type wget >/dev/null 2>&1; then
         echo -e "${RedBG}wget 未安装，准备安装！${Font}"
 	    apt-get install wget -y || yum install wget -y
+        judge "wget 安装"
     fi
 }
 
@@ -56,6 +57,17 @@ function countdown_sleep() {
         sleep 1
     done
     clear
+}
+
+# 检查是否安装成功
+judge() {
+  if [[ $? -eq 0 ]]; then
+    echo -e "${OK} ${GreenBG} $1 完成 ${Font}"
+    sleep 1
+  else
+    echo -e "${Error} ${RedBG} $1 失败 ${Font}"
+    exit 1
+  fi
 }
 
 # 定义函数，使其可以接受参数

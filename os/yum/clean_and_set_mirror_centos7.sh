@@ -15,16 +15,6 @@ Warning="${Red}[警告]${Font}"
 source '/etc/os-release'
 VERSION="${VERSION_ID}"
 
-is_root() {
-  if [ "$EUID" -eq 0 ]; then
-    # echo -e "${OK} ${GreenBG} 当前用户是root用户，进入安装流程 ${Font}"
-    sleep 1
-  else
-    echo -e "${Error} ${RedBG} 当前用户不是root用户，请切换到root用户后重新执行脚本 ${Font}"
-    exit 1
-  fi
-}
-
 check_version() {
   if [ "$VERSION" != "7" ]; then
     echo -e "${Error} ${RedBG} 该脚本仅适用于CentOS 7，当前系统版本为: $VERSION ${Font}"
@@ -33,20 +23,9 @@ check_version() {
   echo -e "${OK} ${GreenBG} 确认当前系统版本为CentOS 7 ${Font}"
 }
 
-judge() {
-  if [[ $? -eq 0 ]]; then
-    echo -e "${OK} ${GreenBG} $1 完成 ${Font}"
-    sleep 1
-  else
-    echo -e "${Error} ${RedBG} $1 失败 ${Font}"
-    exit 1
-  fi
-}
 
 # 主函数
 main() {
-  # 检查是否为root用户
-  is_root
 
   check_version
 
