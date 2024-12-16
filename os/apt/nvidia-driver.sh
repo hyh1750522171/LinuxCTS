@@ -163,7 +163,7 @@ else
                 exit
                 ;;
         esac
-	echo "系统现在将重新启动！！！请在重新启动后重新运行此脚本以完成安装"
+	echo "系统现在将在 5 秒后重新启动！"
  	sleep 5s
         reboot
     fi

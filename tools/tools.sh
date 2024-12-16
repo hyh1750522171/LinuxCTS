@@ -9,6 +9,7 @@ headers_tools="—————————————————————�
 ${Green}1.${Font} centos添加epel软件源
 ${Green}2.${Font} ubuntu添加epel软件源
 ${Green}3.${Font} debian添加epel软件源
+${Green}31.${Font} centos7 更换base源
 —————————————————————————— 系统升级 ——————————————————————————
 ${Green}4.${Font} centos升级软件和系统
 ${Green}5.${Font} ubuntu升级软件和系统
@@ -85,7 +86,7 @@ case $num in
     source <(curl -s ${download_url}/tools/frps.sh)
     ;;
 15)
-    source <(curl -s ${download_url}/tools/todesk.sh)
+    source <(curl -s ${download_url}/os/apt/todesk.sh)
     ;;
 16)
     source <(curl -s ${download_url}/tools/frpc.sh)
@@ -97,7 +98,7 @@ case $num in
     source <(curl -s ${download_url}/tools/nezha.sh)
     ;;
 19)
-    source <(curl -s ${download_url}/tools/spark.sh)
+    source <(curl -s ${download_url}/os/apt/spark.sh)
     ;;
 20)
     source <(curl -s ${download_url}/tools/status.sh)
@@ -109,10 +110,10 @@ case $num in
     install_docker
     ;;
 26)
-    source <(curl -s ${download_url}/tools/nvidia-driver.sh)
+    source <(curl -s ${download_url}/os/apt/nvidia-driver.sh)
     ;;
 28)
-    source <(curl -s ${download_url}/tools/nvidia-docker.sh)
+    source <(curl -s ${download_url}/os/apt/nvidia-docker.sh)
     ;;
 30)
     echo -e "${Yellow} 安装miniconda,首先需要您退出到普通用户使用下面连接一键安装....  ${Font}"

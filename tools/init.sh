@@ -14,13 +14,19 @@ shanshuo2="\033[0m"
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
+
+#核心文件
+get_opsy(){
+    [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
+    [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
+    [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
+}
 #变量引用
 opsy=$( get_opsy )
 cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
 tram=$( free -m | awk '/Mem/ {print $2}' )
 uram=$( free -m | awk '/Mem/ {print $3}' )
 ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
-
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
 
 #检查账号
@@ -71,15 +77,6 @@ install_docker(){
         echo "$PACKAGE_NAME 已安装."
     fi
 }
-
-#核心文件
-get_opsy(){
-    [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
-    [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
-    [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
-}
-
-
 
 headers(){
     # 定义表头内容
