@@ -120,7 +120,7 @@ case $num in
     echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/tools/miniconda.sh) ${Font}"
     ;;
 31)
-    source <(curl -s ${download_url}/tools/clean_and_set_mirror_centos7.sh)
+    source <(curl -s ${download_url}/os/yum/clean_and_set_mirror_centos7.sh)
     ;;
 99)
     # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh
