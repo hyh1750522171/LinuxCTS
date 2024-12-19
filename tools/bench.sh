@@ -42,28 +42,28 @@ trap "Global_TrapSigExit_Sig15" 15
 Global_TrapSigExit_Sig1() {
     echo -e "\n\n${Msg_Error}Caught Signal SIGHUP, Exiting ...\n"
     Global_TrapSigExit_Action
-    exit 1
+    exit
 }
 
 # Trap终止信号2 - 处理 (Ctrl+C)
 Global_TrapSigExit_Sig2() {
     echo -e "\n\n${Msg_Error}Caught Signal SIGINT (or Ctrl+C), Exiting ...\n"
     Global_TrapSigExit_Action
-    exit 1
+    exit
 }
 
 # Trap终止信号3 - 处理
 Global_TrapSigExit_Sig3() {
     echo -e "\n\n${Msg_Error}Caught Signal SIGQUIT, Exiting ...\n"
     Global_TrapSigExit_Action
-    exit 1
+    exit
 }
 
 # Trap终止信号15 - 处理 (进程被杀)
 Global_TrapSigExit_Sig15() {
     echo -e "\n\n${Msg_Error}Caught Signal SIGTERM, Exiting ...\n"
     Global_TrapSigExit_Action
-    exit 1
+    exit
 }
 
 # 新版JSON解析
@@ -1002,7 +1002,7 @@ Check_Virtwhat() {
     # 二次检测
     if [ ! -f "/usr/sbin/virt-what" ]; then
         echo -e "Virt-What Moudle install Failure! Try Restart Bench or Manually install it! (/usr/sbin/virt-what)"
-        exit 1
+        exit
     fi
 }
 
@@ -1111,7 +1111,7 @@ Check_Speedtest_GetComponent() {
     /usr/local/Bench/bin/speedtest --version >/dev/null 2>&1
     if [ "$?" != "0" ]; then
         echo -e "Speedtest Moudle install Failure! Try Restart Bench or Manually install it!"
-        exit 1
+        exit
     fi
 }
 
@@ -1200,7 +1200,7 @@ Check_BestTrace() {
     # 二次检测
     if [ ! -f "/usr/local/Bench/bin/besttrace" ]; then
         echo -e "BestTrace Moudle install Failure! Try Restart Bench or Manually install it! (/usr/local/Bench/bin/besttrace)"
-        exit 1
+        exit
     fi
 }
 
@@ -1254,7 +1254,7 @@ Check_JSONQuery() {
     # 二次检测
     if [ ! -f "/usr/bin/jq" ]; then
         echo -e "JSON Query Moudle install Failure! Try Restart Bench or Manually install it! (/usr/bin/jq)"
-        exit 1
+        exit
     fi
 }
 
@@ -1287,7 +1287,7 @@ Check_SysBench() {
     # 最终检测
     if [ ! -f "/usr/bin/sysbench" ] && [ ! -f "/usr/local/bin/sysbench" ]; then
         echo -e "${Msg_Error}SysBench Moudle install Failure! Try Restart Bench or Manually install it! (/usr/bin/sysbench)"
-        exit 1
+        exit
     fi
 }
 
