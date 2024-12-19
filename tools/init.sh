@@ -35,7 +35,7 @@ check_root(){
 		echo -e "${RedBG}当前不是ROOT账号，建议更换ROOT账号使用。${Font}"
 		echo -e "${Yellow}不要是用 sudo 执行脚本，直接使用 ROOT 账号执行。${Font} "
 		countdown_sleep 5
-        exit 1
+        exit
 	fi
 }
 
@@ -66,7 +66,7 @@ judge() {
     sleep 1
   else
     echo -e "${Error} ${RedBG} $1 失败 ${Font}"
-    exit 1
+    exit
   fi
 }
 

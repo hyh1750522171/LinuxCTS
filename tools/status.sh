@@ -57,10 +57,10 @@ check_sys() {
   bit=$(uname -m)
 }
 check_installed_server_status() {
-  [[ ! -e "${server_file}/sergate" ]] && echo -e "${Error} ServerStatus 服务端没有安装，请检查 !" && exit 1
+  [[ ! -e "${server_file}/sergate" ]] && echo -e "${Error} ServerStatus 服务端没有安装，请检查 !" && exit
 }
 check_installed_client_status() {
-  [[ ! -e "${client_file}/status-client.py" ]] && echo -e "${Error} ServerStatus 客户端没有安装，请检查 !" && exit 1
+  [[ ! -e "${client_file}/status-client.py" ]] && echo -e "${Error} ServerStatus 客户端没有安装，请检查 !" && exit
 }
 check_pid_server() {
   #PID=$(ps -ef | grep "sergate" | grep -v grep | grep -v ".sh" | grep -v "init.d" | grep -v "service" | awk '{print $2}')
@@ -83,19 +83,19 @@ check_region() {
   return 1
 }
 Download_Server_Status_server() {
-  cd "/tmp" || exit 1
+  cd "/tmp" || exit
   [[ ${mirror_num} == 2 ]] && bundle_link="https://cokemine.coding.net/p/hotarunet/d/ServerStatus-Hotaru/git/archive/master/?download=true" || bundle_link="https://github.com/CokeMine/ServerStatus-Hotaru/archive/master.zip"
   [[ ${mirror_num} == 2 ]] && github_link="https://hub.fastgit.org" || github_link="https://github.com"
   wget -N --no-check-certificate "${bundle_link}" -O "master.zip"
-  [[ ! -e "master.zip" ]] && echo -e "${Error} ServerStatus 服务端下载失败 !" && exit 1
+  [[ ! -e "master.zip" ]] && echo -e "${Error} ServerStatus 服务端下载失败 !" && exit
   unzip master.zip
   rm -rf master.zip
   [[ -d "/tmp/cokemine-hotarunet-ServerStatus-Hotaru-master" ]] && mv "/tmp/cokemine-hotarunet-ServerStatus-Hotaru-master" "/tmp/ServerStatus-Hotaru-master"
-  [[ ! -d "/tmp/ServerStatus-Hotaru-master" ]] && echo -e "${Error} ServerStatus 服务端解压失败 !" && exit 1
-  cd "/tmp/ServerStatus-Hotaru-master/server" || exit 1
+  [[ ! -d "/tmp/ServerStatus-Hotaru-master" ]] && echo -e "${Error} ServerStatus 服务端解压失败 !" && exit
+  cd "/tmp/ServerStatus-Hotaru-master/server" || exit
   make
-  [[ ! -e "sergate" ]] && echo -e "${Error} ServerStatus 服务端编译失败 !" && cd "${file_1}" && rm -rf "/tmp/ServerStatus-Hotaru-master" && exit 1
-  cd "${file_1}" || exit 1
+  [[ ! -e "sergate" ]] && echo -e "${Error} ServerStatus 服务端编译失败 !" && cd "${file_1}" && rm -rf "/tmp/ServerStatus-Hotaru-master" && exit
+  cd "${file_1}" || exit
   mkdir -p "${server_file}"
   if [[ -e "${server_file}/sergate" ]]; then
     mv "${server_file}/sergate" "${server_file}/sergate1"
@@ -110,16 +110,16 @@ Download_Server_Status_server() {
   if [[ ! -e "${server_file}/sergate" ]]; then
     echo -e "${Error} ServerStatus 服务端移动重命名失败 !"
     [[ -e "${server_file}/sergate1" ]] && mv "${server_file}/sergate1" "${server_file}/sergate"
-    exit 1
+    exit
   else
     [[ -e "${server_file}/sergate1" ]] && rm -rf "${server_file}/sergate1"
   fi
 }
 Download_Server_Status_client() {
-  cd "/tmp" || exit 1
+  cd "/tmp" || exit
   wget -N --no-check-certificate "${link_prefix}/clients/status-client.py"
-  [[ ! -e "status-client.py" ]] && echo -e "${Error} ServerStatus 客户端下载失败 !" && exit 1
-  cd "${file_1}" || exit 1
+  [[ ! -e "status-client.py" ]] && echo -e "${Error} ServerStatus 客户端下载失败 !" && exit
+  cd "${file_1}" || exit
   mkdir -p "${client_file}"
   [[ -e "${client_file}/status-client.py" ]] && mv "${client_file}/status-client.py" "${client_file}/status-client1.py"
   mv "/tmp/status-client.py" "${client_file}/status-client.py"
@@ -127,7 +127,7 @@ Download_Server_Status_client() {
     echo -e "${Error} ServerStatus 客户端移动失败 !"
     [[ -e "${client_file}/status-client1.py" ]] && mv "${client_file}/status-client1.py" "${client_file}/status-client.py"
     rm -rf "/tmp/status-client.py"
-    exit 1
+    exit
   else
     [[ -e "${client_file}/status-client1.py" ]] && rm -rf "${client_file}/status-client1.py"
     rm -rf "/tmp/status-client.py"
@@ -142,14 +142,14 @@ Download_Server_Status_Service() {
     wget --no-check-certificate "${link_prefix}/service/status-${mode}.service" -O "/usr/lib/systemd/system/status-${mode}.service" ||
       {
         echo -e "${Error} ServerStatus ${service_note}服务管理脚本下载失败 !"
-        exit 1
+        exit
       }
     systemctl enable "status-${mode}.service"
   else
     wget --no-check-certificate "${link_prefix}/service/server_status_${mode}_${release}" -O "/etc/init.d/status-${mode}" ||
       {
         echo -e "${Error} ServerStatus ${service_note}服务管理脚本下载失败 !"
-        exit 1
+        exit
       }
     chmod +x "/etc/init.d/status-${mode}"
     [[ ${release} == "centos" ]] &&
@@ -291,7 +291,7 @@ Set_username() {
     echo -e "请输入 ServerStatus 服务端中对应配置的用户名[username]（字母/数字，不可与其他账号重复）"
   fi
   read -erp "(默认: 取消):" username_s
-  [[ -z "$username_s" ]] && echo "已取消..." && exit 0
+  [[ -z "$username_s" ]] && echo "已取消..." && exit
   echo && echo "	================================================"
   echo -e "	账号[username]: ${Red_background_prefix} ${username_s} ${Font_color_suffix}"
   echo "	================================================" && echo
@@ -384,7 +384,7 @@ Set_ServerStatus_server() {
 ————————
  ${Green_font_prefix}11.${Font_color_suffix} 修改 服务端监听端口" && echo
   read -erp "(默认: 取消):" server_num
-  [[ -z "${server_num}" ]] && echo "已取消..." && exit 1
+  [[ -z "${server_num}" ]] && echo "已取消..." && exit
   if [[ ${server_num} == "1" ]]; then
     Add_ServerStatus_server
   elif [[ ${server_num} == "2" ]]; then
@@ -410,14 +410,14 @@ Set_ServerStatus_server() {
     Set_server_port
     Write_server_config_conf
   else
-    echo -e "${Error} 请输入正确的数字[1-11]" && exit 1
+    echo -e "${Error} 请输入正确的数字[1-11]" && exit
   fi
   Restart_ServerStatus_server
 }
 List_ServerStatus_server() {
   conf_text=$(${jq_file} '.servers' ${server_conf} | ${jq_file} ".[]|.username" | sed 's/\"//g')
   conf_text_total=$(echo -e "${conf_text}" | wc -l)
-  [[ ${conf_text_total} == "0" ]] && echo -e "${Error} 没有发现 一个节点配置，请检查 !" && exit 1
+  [[ ${conf_text_total} == "0" ]] && echo -e "${Error} 没有发现 一个节点配置，请检查 !" && exit
   conf_text_total_a=$((conf_text_total - 1))
   conf_list_all=""
   for ((integer = 0; integer <= conf_text_total_a; integer++)); do
@@ -442,7 +442,7 @@ List_ServerStatus_server() {
 Add_ServerStatus_server() {
   Set_config_server
   Set_username_ch=$(grep '"username": "'"${username_s}"'"' ${server_conf})
-  [[ -n "${Set_username_ch}" ]] && echo -e "${Error} 用户名已被使用 !" && exit 1
+  [[ -n "${Set_username_ch}" ]] && echo -e "${Error} 用户名已被使用 !" && exit
   sed -i '3i\  },' ${server_conf}
   sed -i '3i\   "region": "'"${region_s}"'"' ${server_conf}
   sed -i '3i\   "disabled": false ,' ${server_conf}
@@ -457,10 +457,10 @@ Add_ServerStatus_server() {
 }
 Del_ServerStatus_server() {
   List_ServerStatus_server
-  [[ "${conf_text_total}" == "1" ]] && echo -e "${Error} 节点配置仅剩 1个，不能删除 !" && exit 1
+  [[ "${conf_text_total}" == "1" ]] && echo -e "${Error} 节点配置仅剩 1个，不能删除 !" && exit
   echo -e "请输入要删除的节点用户名"
   read -erp "(默认: 取消):" del_server_username
-  [[ -z "${del_server_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${del_server_username}" ]] && echo -e "已取消..." && exit
   del_username=$(cat -n ${server_conf} | grep '"username": "'"${del_server_username}"'"' | awk '{print $1}')
   if [[ -n ${del_username} ]]; then
     del_username_min=$((del_username - 1))
@@ -474,30 +474,30 @@ Del_ServerStatus_server() {
     sed -i "${del_username_min},${del_username_max}d" ${server_conf}
     echo -e "${Info} 节点删除成功 ${Green_font_prefix}[ 节点用户名: ${del_server_username} ]${Font_color_suffix} "
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_username() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_username
     Set_username_ch=$(grep '"username": "'"${username_s}"'"' ${server_conf})
-    [[ -n "${Set_username_ch}" ]] && echo -e "${Error} 用户名已被使用 !" && exit 1
+    [[ -n "${Set_username_ch}" ]] && echo -e "${Error} 用户名已被使用 !" && exit
     sed -i "${Set_username_num}"'s/"username": "'"${manually_username}"'"/"username": "'"${username_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原节点用户名: ${manually_username}, 新节点用户名: ${username_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_password() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_password
@@ -506,14 +506,14 @@ Modify_ServerStatus_server_password() {
     sed -i "${Set_password_num_a}"'s/"password": "'"${Set_password_num_text}"'"/"password": "'"${password_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原节点密码: ${Set_password_num_text}, 新节点密码: ${password_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_name() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_name
@@ -522,14 +522,14 @@ Modify_ServerStatus_server_name() {
     sed -i "${Set_name_num_a}"'s/"name": "'"${Set_name_num_a_text}"'"/"name": "'"${name_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原节点名称: ${Set_name_num_a_text}, 新节点名称: ${name_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_type() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_type
@@ -538,14 +538,14 @@ Modify_ServerStatus_server_type() {
     sed -i "${Set_type_num_a}"'s/"type": "'"${Set_type_num_a_text}"'"/"type": "'"${type_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原节点虚拟化: ${Set_type_num_a_text}, 新节点虚拟化: ${type_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_location() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_location
@@ -554,14 +554,14 @@ Modify_ServerStatus_server_location() {
     sed -i "${Set_location_num_a}"'s/"location": "'"${Set_location_num_a_text}"'"/"location": "'"${location_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原节点位置: ${Set_location_num_a_text}, 新节点位置: ${location_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_region() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_region
@@ -570,14 +570,14 @@ Modify_ServerStatus_server_region() {
     sed -i "${Set_region_num_a}"'s/"region": "'"${Set_region_num_a_text}"'"/"region": "'"${region_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原节点地区: ${Set_region_num_a_text}, 新节点地区: ${region_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_all() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_username
@@ -604,14 +604,14 @@ Modify_ServerStatus_server_all() {
     sed -i "${Set_region_num_a}"'s/"region": "'"${Set_region_num_a_text}"'"/"region": "'"${region_s}"'"/g' ${server_conf}
     echo -e "${Info} 修改成功。"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Modify_ServerStatus_server_disabled() {
   List_ServerStatus_server
   echo -e "请输入要修改的节点用户名"
   read -erp "(默认: 取消):" manually_username
-  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit 1
+  [[ -z "${manually_username}" ]] && echo -e "已取消..." && exit
   Set_username_num=$(cat -n ${server_conf} | grep '"username": "'"${manually_username}"'"' | awk '{print $1}')
   if [[ -n ${Set_username_num} ]]; then
     Set_disabled_num_a=$((Set_username_num + 6))
@@ -624,7 +624,7 @@ Modify_ServerStatus_server_disabled() {
     sed -i "${Set_disabled_num_a}"'s/"disabled": '"${Set_disabled_num_a_text}"'/"disabled": '"${disabled_s}"'/g' ${server_conf}
     echo -e "${Info} 修改成功 [ 原禁用状态: ${Set_disabled_num_a_text}, 新禁用状态: ${disabled_s} ]"
   else
-    echo -e "${Error} 请输入正确的节点用户名 !" && exit 1
+    echo -e "${Error} 请输入正确的节点用户名 !" && exit
   fi
 }
 Set_ServerStatus_client() {
@@ -655,7 +655,7 @@ Install_vnStat() {
   ./configure --prefix=/usr --sysconfdir=/etc && make && make install
   if ! vnstat -v >/dev/null 2>&1; then
     echo "编译安装vnStat失败，请手动安装vnStat"
-    exit 1
+    exit
   fi
   vnstatd -d
   if [[ ${release} == "centos" ]]; then
@@ -686,7 +686,7 @@ Modify_config_client_traffic() {
     netName=$(awk '{i++; if( i>2 && ($2 != 0 && $10 != 0) ){print $1}}' /proc/net/dev | sed 's/^lo:$//g' | sed 's/^tun:$//g' | sed '/^$/d' | sed 's/^[\t]*//g' | sed 's/[:]*$//g')
     if [ -z "$netName" ]; then
       echo -e "获取网卡名称失败，请在Github反馈"
-      exit 1
+      exit
     fi
     if [[ $netName =~ [[:space:]] ]]; then
       read -erp "检测到多个网卡: ${netName}，请手动输入网卡名称" netName
@@ -738,7 +738,7 @@ Install_jq() {
       [[ ${release} == "debian" ]] && apt -y install jq
       jq_file="/usr/bin/jq"
     fi
-    [[ ! -e ${jq_file} ]] && echo -e "${Error} JQ解析器 下载失败，请检查 !" && exit 1
+    [[ ! -e ${jq_file} ]] && echo -e "${Error} JQ解析器 下载失败，请检查 !" && exit
     chmod +x ${jq_file}
     echo -e "${Info} JQ解析器 安装完成，继续..."
   else
@@ -746,7 +746,7 @@ Install_jq() {
   fi
   if [[ ! -e ${region_json} ]]; then
     wget --no-check-certificate "${raw_link}/michaelwittig/node-i18n-iso-countries/master/langs/zh.json" -O ${region_json}
-    [[ ! -e ${region_json} ]] && echo -e "${Error} ISO 3166-1 json文件下载失败，请检查！" && exit 1
+    [[ ! -e ${region_json} ]] && echo -e "${Error} ISO 3166-1 json文件下载失败，请检查！" && exit
   fi
 }
 Install_caddy() {
@@ -770,7 +770,7 @@ Install_caddy() {
       elif [[ ${release} == "archlinux" ]]; then
         pacman -Sy caddy --noconfirm
       fi
-      [[ ! -e "/usr/bin/caddy" ]] && echo -e "${Error} Caddy安装失败，请手动部署，Web网页文件位置：${web_file}" && exit 1
+      [[ ! -e "/usr/bin/caddy" ]] && echo -e "${Error} Caddy安装失败，请手动部署，Web网页文件位置：${web_file}" && exit
       systemctl enable caddy
       echo "" >${caddy_file}
     }
@@ -790,7 +790,7 @@ EOF
 }
 Install_ServerStatus_server() {
   Set_Mirror
-  [[ -e "${server_file}/sergate" ]] && echo -e "${Error} 检测到 ServerStatus 服务端已安装 !" && exit 1
+  [[ -e "${server_file}/sergate" ]] && echo -e "${Error} 检测到 ServerStatus 服务端已安装 !" && exit
   Set_server_port
   echo -e "${Info} 开始安装/配置 依赖..."
   Installation_dependency "server"
@@ -808,7 +808,7 @@ Install_ServerStatus_server() {
 }
 Install_ServerStatus_client() {
   Set_Mirror
-  [[ -e "${client_file}/status-client.py" ]] && echo -e "${Error} 检测到 ServerStatus 客户端已安装 !" && exit 1
+  [[ -e "${client_file}/status-client.py" ]] && echo -e "${Error} 检测到 ServerStatus 客户端已安装 !" && exit
   check_sys
   echo -e "${Info} 开始设置 用户配置..."
   Set_config_client
@@ -853,7 +853,7 @@ Update_ServerStatus_client() {
   fi
   if [[ ! -e "${client_file}/status-client.py" ]]; then
     if [[ ! -e "${file}/status-client.py" ]]; then
-      echo -e "${Error} ServerStatus 客户端文件不存在 !" && exit 1
+      echo -e "${Error} ServerStatus 客户端文件不存在 !" && exit
     else
       client_text="$(sed 's/\"//g;s/,//g;s/ //g' "${file}/status-client.py")"
       rm -rf "${file}/status-client.py"
@@ -876,7 +876,7 @@ Update_ServerStatus_client() {
 Start_ServerStatus_server() {
   check_installed_server_status
   check_pid_server
-  [[ -n ${PID} ]] && echo -e "${Error} ServerStatus 正在运行，请检查 !" && exit 1
+  [[ -n ${PID} ]] && echo -e "${Error} ServerStatus 正在运行，请检查 !" && exit
   if [[ ${release} == "archlinux" ]]; then
     systemctl start status-server.service
   else
@@ -886,7 +886,7 @@ Start_ServerStatus_server() {
 Stop_ServerStatus_server() {
   check_installed_server_status
   check_pid_server
-  [[ -z ${PID} ]] && echo -e "${Error} ServerStatus 没有运行，请检查 !" && exit 1
+  [[ -z ${PID} ]] && echo -e "${Error} ServerStatus 没有运行，请检查 !" && exit
   if [[ ${release} == "archlinux" ]]; then
     systemctl stop status-server.service
   else
@@ -950,7 +950,7 @@ Uninstall_ServerStatus_server() {
 Start_ServerStatus_client() {
   check_installed_client_status
   check_pid_client
-  [[ -n ${PID} ]] && echo -e "${Error} ServerStatus 正在运行，请检查 !" && exit 1
+  [[ -n ${PID} ]] && echo -e "${Error} ServerStatus 正在运行，请检查 !" && exit
   if [[ ${release} == "archlinux" ]]; then
     systemctl start status-client.service
   else
@@ -960,7 +960,7 @@ Start_ServerStatus_client() {
 Stop_ServerStatus_client() {
   check_installed_client_status
   check_pid_client
-  [[ -z ${PID} ]] && echo -e "${Error} ServerStatus 没有运行，请检查 !" && exit 1
+  [[ -z ${PID} ]] && echo -e "${Error} ServerStatus 没有运行，请检查 !" && exit
   if [[ ${release} == "archlinux" ]]; then
     systemctl stop status-client.service
   else
@@ -1023,19 +1023,19 @@ View_ServerStatus_client() {
 ————————————————————"
 }
 View_client_Log() {
-  [[ ! -e ${client_log_file} ]] && echo -e "${Error} 没有找到日志文件 !" && exit 1
+  [[ ! -e ${client_log_file} ]] && echo -e "${Error} 没有找到日志文件 !" && exit
   echo && echo -e "${Tip} 按 ${Red_font_prefix}Ctrl+C${Font_color_suffix} 终止查看日志" && echo -e "如果需要查看完整日志内容，请用 ${Red_font_prefix}cat ${client_log_file}${Font_color_suffix} 命令。" && echo
   tail -f ${client_log_file}
 }
 View_server_Log() {
-  [[ ! -e ${server_log_file} ]] && echo -e "${Error} 没有找到日志文件 !" && exit 1
+  [[ ! -e ${server_log_file} ]] && echo -e "${Error} 没有找到日志文件 !" && exit
   echo && echo -e "${Tip} 按 ${Red_font_prefix}Ctrl+C${Font_color_suffix} 终止查看日志" && echo -e "如果需要查看完整日志内容，请用 ${Red_font_prefix}cat ${server_log_file}${Font_color_suffix} 命令。" && echo
   tail -f ${server_log_file}
 }
 Update_Shell() {
   Set_Mirror
   sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "${link_prefix}/status.sh" | grep 'sh_ver="' | awk -F "=" '{print $NF}' | sed 's/\"//g' | head -1)
-  [[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
+  [[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit
   if [[ -e "/etc/init.d/status-client" ]] || [[ -e "/usr/lib/systemd/system/status-client.service" ]]; then
     rm -rf /etc/init.d/status-client
     rm -rf /usr/lib/systemd/system/status-client.service
@@ -1047,7 +1047,7 @@ Update_Shell() {
     Service_Server_Status_server
   fi
   wget -N --no-check-certificate "${link_prefix}/status.sh" && chmod +x status.sh
-  echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
+  echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit
 }
 menu_client() {
   echo && echo -e "  ServerStatus 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}

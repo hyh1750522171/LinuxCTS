@@ -23,7 +23,7 @@ case $OS in
             VERSION=$VERSION_ID
         else
             echo "Your Linux distribution is not supported."
-            exit 1
+            exit
         fi
         ;;
 esac
@@ -67,7 +67,7 @@ gnome_check=$(ps -ef | grep gnome-session | grep -v grep)
 if [ -n "$gnome_check" ]; then
     install_todesk
     # 这里可以添加你想要在有GNOME桌面环境时执行的具体操作
-    exit 0
+    exit
 else
     echo "当前没有GNOME桌面环境，无法安装Todesk。"
 fi
