@@ -34,7 +34,7 @@ fi
 NVIDIA_PRESENT=$(lspci | grep -i nvidia || true)
 
 # Only proceed with Nvidia-specific steps if an Nvidia device is detected
-if [[ -z "$NVIDIA_PRESENT" ]]; then
+if [[ ! -z "$NVIDIA_PRESENT" ]]; then
     echo "No NVIDIA device detected on this system."
 else
 # Check if nvidia-smi is available and working
@@ -49,7 +49,7 @@ else
                         # Commands specific to Ubuntu 20.04
                         sudo -- sh -c 'apt-get update; apt-get upgrade -y; apt-get autoremove -y; apt-get autoclean -y'
                         sudo -- sh -c 'apt-get update; apt-get upgrade -y; apt-get autoremove -y; apt-get autoclean -y'
-                        sudo apt install linux-headers-$(uname -r) -y
+                        # sudo apt install linux-headers-$(uname -r) -y
                         sudo apt del 7fa2af80 || true
                         sudo apt remove 7fa2af80 || true
                         sudo apt install build-essential cmake gpg unzip pkg-config software-properties-common ubuntu-drivers-common -y
@@ -87,7 +87,7 @@ else
                         # Commands specific to Ubuntu 22.04
                         sudo -- sh -c 'apt-get update; apt-get upgrade -y; apt-get autoremove -y; apt-get autoclean -y'
                         sudo -- sh -c 'apt-get update; apt-get upgrade -y; apt-get autoremove -y; apt-get autoclean -y'
-                        sudo apt install linux-headers-$(uname -r) -y
+                        # sudo apt install linux-headers-$(uname -r) -y
                         sudo apt del 7fa2af80 || true
                         sudo apt remove 7fa2af80 || true
                         sudo apt install build-essential cmake gpg unzip pkg-config software-properties-common ubuntu-drivers-common -y
@@ -124,7 +124,7 @@ else
                     "18.04")
                         # Commands specific to Ubuntu 18.04
                         sudo -- sh -c 'apt-get update; apt-get upgrade -y; apt-get autoremove -y; apt-get autoclean -y'
-                        sudo apt-get install linux-headers-$(uname -r) -y
+                        # sudo apt-get install linux-headers-$(uname -r) -y
                         sudo apt del 7fa2af80 || true
                         sudo apt remove 7fa2af80 || true
                         sudo apt install build-essential cmake gpg unzip pkg-config software-properties-common ubuntu-drivers-common alsa-utils -y
@@ -150,7 +150,7 @@ else
 
                     *)
                         echo "This version of Ubuntu is not supported in this script."
-                        exit 
+                        exit 1
                         ;;
                 esac
                 ;;
@@ -160,7 +160,7 @@ else
                     "10"|"11")
                         # Commands specific to Debian 10 & 11
                         sudo -- sh -c 'apt update; apt upgrade -y; apt autoremove -y; apt autoclean -y'
-                        sudo apt install linux-headers-$(uname -r) -y
+                        # sudo apt install linux-headers-$(uname -r) -y
                         sudo apt update -y
                         sudo apt install nvidia-driver firmware-misc-nonfree
                         wget https://nvidia-developer.geekery.cn/compute/cuda/repos/debian${VERSION}/x86_64/cuda-keyring_1.1-1_all.deb
@@ -229,7 +229,7 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
         sudo docker run --rm --gpus all ${hub_docker_url}nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi
     fi
 fi
-sudo apt-mark hold nvidia* libnvidia*
+sudo apt-mark hold 'nvidia* libnvidia*'
 # Add docker group and user to group docker
 sudo groupadd docker || true
 sudo usermod -aG docker $USER || true
