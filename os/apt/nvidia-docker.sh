@@ -34,7 +34,7 @@ fi
 NVIDIA_PRESENT=$(lspci | grep -i nvidia || true)
 
 # Only proceed with Nvidia-specific steps if an Nvidia device is detected
-if [[ ! -z "$NVIDIA_PRESENT" ]]; then
+if [[ -z "$NVIDIA_PRESENT" ]]; then
     echo "No NVIDIA device detected on this system."
 else
 # Check if nvidia-smi is available and working
