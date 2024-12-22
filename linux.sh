@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo "正在检测机器所在国家和地区...请稍后...."
 #全局参数
 url=https://ifconfig.icu
 country=$(curl -s ${url}/country)
