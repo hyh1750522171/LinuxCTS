@@ -33,6 +33,8 @@ ${Green}24.${Font}  Docker 安装                       ${Green}25.${Font}
 ${Green}26.${Font}  Nvidia显卡驱动安装                ${Green}27.${Font}  
 ${Green}28.${Font}  Nvidia-Docker安装                 ${Green}29.${Font} 
 ${Green}30.${Font}  Miniconda安装                     ${Green}31.${Font}  
+—————————————————————————— 卸载软件包 ——————————————————————————
+${Green}32.${Font}  卸载 Docker
 —————————————————————————— 附加脚本 ——————————————————————————
 ${Green}99.${Font} 返回综合脚本
 ${Green}0.${Font} 退出当前脚本
@@ -121,6 +123,9 @@ case $num in
     ;;
 31)
     source <(curl -s ${download_url}/os/yum/clean_and_set_mirror_centos7.sh)
+    ;;
+32)
+    source <(curl -s ${download_url}/os/all/uninstall_docker.sh)
     ;;
 99)
     # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh
