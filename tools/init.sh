@@ -23,12 +23,12 @@ get_opsy(){
 }
 #变量引用
 opsy=$( get_opsy )
-cores=$( gawk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
+cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
 # tram=$( free -m | awk '/Mem|内存/ {print $2}' )
 # uram=$( free -m | awk '/Mem|内存/ {print $3}' )
 
-tram=$( gawk '/MemTotal/{total=$2;unit=$3;if(unit=="kB"){total/=1024;}else if(unit=="bytes"){total/=(1024*1024);}print int(total)}' /proc/meminfo )
-uram=$( gawk '/MemTotal/{total=$2;unit=$3;if(unit=="kB"){total/=1024;}else if(unit=="bytes"){total/=(1024*1024);}print int(total)}' /proc/meminfo )
+tram=$( awk '/MemTotal/{total=$2;unit=$3;if(unit=="kB"){total/=1024;}else if(unit=="bytes"){total/=(1024*1024);}print int(total)}' /proc/meminfo )
+uram=$( awk '/MemTotal/{total=$2;unit=$3;if(unit=="kB"){total/=1024;}else if(unit=="bytes"){total/=(1024*1024);}print int(total)}' /proc/meminfo )
 
 ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')
