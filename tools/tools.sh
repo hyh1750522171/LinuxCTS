@@ -7,8 +7,6 @@ clear
 headers
 headers_tools="—————————————————————————— 安装软件源 ——————————————————————————
 ${Green}1.${Font} centos添加epel软件源
-${Green}2.${Font} ubuntu添加epel软件源
-${Green}3.${Font} debian添加epel软件源
 ${Green}31.${Font} centos7 更换base源
 —————————————————————————— 系统升级 ——————————————————————————
 ${Green}4.${Font} centos升级软件和系统
@@ -45,12 +43,6 @@ read num
 case $num in
 1)
     yum install epel-release -y
-    ;;
-2)
-    apt install epel-release -y
-    ;;
-3)
-    apt install epel-release -y
     ;;
 4)
     yum update
