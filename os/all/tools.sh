@@ -115,6 +115,7 @@ case $num in
 30)
     echo -e "${Yellow} 安装miniconda,首先需要您退出到普通用户使用下面连接一键安装....  ${Font}"
     echo -e "miniconda安装脚本:  ${Green} source <(curl -s ${download_url}/os/all/miniconda.sh) ${Font}"
+    exit
     ;;
 32)
     source <(curl -s ${download_url}/os/all/uninstall_docker.sh)
