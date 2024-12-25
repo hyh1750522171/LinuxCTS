@@ -16,7 +16,10 @@ LinuxCTS 是一个用于 Linux 系统的综合测试脚本，旨在帮助用户�
 ## 依赖
 
 ```bash
+# ubuntu/debian
 sudo apt update && sudo apt install curl -y
+# readhat/centos
+sudo yum update && sudo yum install curl -y
 ```
 
 ### 一键脚本 （临时使用）
