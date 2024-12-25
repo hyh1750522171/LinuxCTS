@@ -262,7 +262,7 @@ if [[ $country == *"China"* ]]; then
     "exec-opts": ["native.cgroupdriver=cgroupfs"],
     "registry-mirrors": ["https://docker.ketches.cn/"]
     }
-    EOF'
+EOF'
     sudo systemctl daemon-reload
 
     # judge "设置Docker镜点 "
@@ -277,7 +277,7 @@ else
     },
     "exec-opts": ["native.cgroupdriver=cgroupfs"]
     }
-    EOF'
+EOF'
     echo "当前国家不是China，未执行Docker镜点设置。"
 fi
 
