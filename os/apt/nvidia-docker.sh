@@ -234,7 +234,6 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
         curl -s -L https://nvidia-docker.geekery.cn/nvidia-docker/gpgkey | sudo apt-key add
         curl -s -L https://nvidia-docker.geekery.cn/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
         sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
-        judge "nvidia-container-toolkit 安装 "
         sudo systemctl restart docker 
         sudo docker run --rm --gpus all $docker_image nvidia-smi
     fi
