@@ -123,7 +123,7 @@ else
                             "10"|"11")
                                 # Commands specific to Debian 10 & 11
                                 sudo -- sh -c 'apt update; apt upgrade -y; apt autoremove -y; apt autoclean -y'
-                                apt install linux-headers-$(uname -r) -y
+                                # apt install linux-headers-$(uname -r) -y
                                 apt update -y
                                 apt install nvidia-driver firmware-misc-nonfree
                                 wget https://nvidia-developer.geekery.cn/compute/cuda/repos/debian${VERSION}/x86_64/cuda-keyring_1.1-1_all.deb
