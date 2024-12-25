@@ -18,10 +18,10 @@ judge() {
 
 country=$(curl -s https://ifconfig.icu/country)
 if [[ $country == *"China"* ]]; then
-    hub_docker_url=hub.geekery.cn/
+    docker_image=swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/nvidia/cuda:12.4.1-base-ubuntu22.04
     # judge "设置Docker镜点 "
 else
-    hub_docker_url=docker.io/
+    docker_image=nvidia/cuda:12.4.1-base-ubuntu22.04
 fi
 
 # Set Gloabal Variables
@@ -225,7 +225,7 @@ install_docker
 
 # Test / Install nvidia-docker
 if [[ ! -z "$NVIDIA_PRESENT" ]]; then
-    if sudo docker run --rm --gpus all ${hub_docker_url}nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi &>/dev/null; then
+    if sudo docker run --rm --gpus all $docker_image nvidia-smi &>/dev/null; then
         echo "nvidia-docker is enabled and working. Exiting script."
     else
         echo "nvidia-docker does not seem to be enabled. Proceeding with installations..."
@@ -237,7 +237,7 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
         judge "nvidia-container-toolkit 安装 "
         sudo systemctl restart docker 
         judge "重启docker "
-        sudo docker run --rm --gpus all ${hub_docker_url}nvidia/cuda:11.0.3-base-ubuntu18.04 nvidia-smi
+        sudo docker run --rm --gpus all $docker_image nvidia-smi
     fi
 fi
 sudo apt-mark hold 'nvidia* libnvidia*'
