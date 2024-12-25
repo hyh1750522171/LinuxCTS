@@ -236,7 +236,6 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
         sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
         judge "nvidia-container-toolkit 安装 "
         sudo systemctl restart docker 
-        judge "重启docker "
         sudo docker run --rm --gpus all $docker_image nvidia-smi
     fi
 fi
@@ -285,4 +284,3 @@ fi
 
 # Restart Docker to apply changes.
 sudo systemctl restart docker
-judge "重启docker "
