@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -euxo pipefail
+# set -euxo pipefail
 
-export DEBIAN_FRONTEND=noninteractive
-sudo dpkg --set-selections <<< "cloud-init install" || true
+# export DEBIAN_FRONTEND=noninteractive
+# sudo dpkg --set-selections <<< "cloud-init install" || true
 
 # 检查是否安装成功
 judge() {
@@ -238,7 +238,7 @@ if [[ ! -z "$NVIDIA_PRESENT" ]]; then
         sudo docker run --rm --gpus all $docker_image nvidia-smi
     fi
 fi
-sudo apt-mark hold 'nvidia* libnvidia*'
+sudo apt-mark hold "nvidia*" "libnvidia*"
 # Add docker group and user to group docker
 sudo groupadd docker || true
 sudo usermod -aG docker $USER || true
