@@ -6,15 +6,6 @@
 # sudo dpkg --set-selections <<< "cloud-init install" || true
 
 # 检查是否安装成功
-judge() {
-  if [[ $? -eq 0 ]]; then
-    echo -e "${OK} ${GreenBG} $1 完成 ${Font}"
-    sleep 1
-  else
-    echo -e "${Error} ${RedBG} $1 失败 ${Font}"
-    exit
-  fi
-}
 
 country=$(curl -s https://ifconfig.icu/country)
 if [[ $country == *"China"* ]]; then
