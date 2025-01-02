@@ -57,11 +57,11 @@ sys_install(){
         judge "curl 安装"
     fi
 
-    if ! type nvim >/dev/null 2>&1; then
-        echo -e "${RedBG}vim 未安装，准备安装！${Font}"
-	    install neovim ssh
-        judge "nvim 安装"
-    fi
+    # if ! type nvim >/dev/null 2>&1; then
+    #     echo -e "${RedBG}vim 未安装，准备安装！${Font}"
+	#     install neovim ssh
+    #     judge "nvim 安装"
+    # fi
 
 }
 
