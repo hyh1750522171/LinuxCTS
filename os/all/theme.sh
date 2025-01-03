@@ -4,7 +4,7 @@
 
 wget -O /tmp/Sunday-cn.tar.gz https://gitee.com/muaimingjun/LinuxCTS/raw/main/app/Sunday-cn.tar.gz
 sudo mkdir /usr/share/grub/themes
-sudo tar -zxvf Sunday-cn.tar.gz -C /usr/share/grub/themes
+sudo tar -zxvf /tmp/Sunday-cn.tar.gz -C /usr/share/grub/themes
 
 #4.将主题添加到文本文件的底部 
 sudo echo GRUB_THEME=\"/usr/share/grub/themes/Sunday_cn/theme.txt\" >> /etc/default/grub
