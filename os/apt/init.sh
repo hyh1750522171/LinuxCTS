@@ -31,6 +31,9 @@ case $DISTRO in
             
         fi
         sudo apt update && sudo apt upgrade -y
+        echo -e "${Green}系统源已更换为中科大源${Font}"
+        echo -e "${Green}正在安装基础软件${Font}"
+        sudo apt install curl git git-lfs build-essential ssh ntpdate -y
     ;;
 esac
 
