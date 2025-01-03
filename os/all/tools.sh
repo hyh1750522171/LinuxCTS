@@ -17,7 +17,7 @@ ${Green}7.${Font} centos安装1panel
 ${Green}8.${Font} ubuntu安装1panel
 ${Green}9.${Font} debian安装1panel
 —————————————————————————— 系统功能 ——————————————————————————
-${Green}10.${Font} 修改root密码
+${Green}10.${Font} 修改root密码                     ${Green}50.${Font} 重启进入BIOS
 ${Green}11.${Font} 修改时间为中国
 ${Green}12.${Font} 重启当前系统
 ${Green}13.${Font} 关闭当前系统
@@ -119,6 +119,9 @@ case $num in
     ;;
 32)
     source <(curl -s ${download_url}/os/all/uninstall_docker.sh)
+    ;;
+50)
+    systemctl reboot --firmware-setup
     ;;
 99)
     # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh
