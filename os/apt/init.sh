@@ -50,28 +50,31 @@ fi
 
 read -p "是否需要安装向日葵远程控制？此项与todesk二选一(y/n): " install_sun
 if [[ "$install_sun" == "y" ]]; then
-    wget -O $app_path/wechat.deb https://dw.oray.com/sunlogin/linux/SunloginClient_15.2.0.63064_amd64.deb
+    wget -O $app_path/SunloginClien.deb https://dw.oray.com/sunlogin/linux/SunloginClient_15.2.0.63064_amd64.deb
+    sudo apt install -y $app_path/SunloginClien.deb
 fi
 
-read -p "是否需要安装搜狗输入法？(y/n): " sougou
-if [[ "$sougou" == "y" ]]; then
-    echo "正在下载安装搜狗输入法"
-    wget -O $app_path/sogou.deb https://minetest.top/upload/sogoupinyin_4.2.1.145_amd64.deb
-    sudo apt install fcitx libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2 libgsettings-qt1 gnome-tweaks chrome-gnome-shell variety -y
-    sudo apt purge ibus* -y && sudo apt autoremove -y
-    sudo dpkg -i $app_path/sogou.deb
-    sudo apt install -f
-    rm $app_path/sogou.deb
-fi
+# read -p "是否需要安装搜狗输入法？(y/n): " sougou
+# if [[ "$sougou" == "y" ]]; then
+#     echo "正在下载安装搜狗输入法"
+#     wget -O $app_path/sogou.deb https://minetest.top/upload/sogoupinyin_4.2.1.145_amd64.deb
+#     sudo apt install fcitx libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2 libgsettings-qt1 gnome-tweaks chrome-gnome-shell variety -y
+#     sudo apt purge ibus* -y && sudo apt autoremove -y
+#     sudo dpkg -i $app_path/sogou.deb
+#     sudo apt install -f
+#     rm $app_path/sogou.deb
+# fi
 
 read -p "是否需要安装微信？(y/n): " install_wechat
 if [[ "$install_wechat" == "y" ]]; then
     wget -O $app_path/wechat.deb https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb
+    sudo apt install -y $app_path/wechat.deb
 fi 
 
 read -p "您是否需要安装QQ？(y/n): " install_qq
 if [[ "$install_qq" == "y" ]]; then
     wget -O $app_path/qq.deb https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.13_241023_amd64_01.deb
+    sudo apt install -y $app_path/qq.deb
 fi
 
 read -p "您是否需要解决双系统时间问题? <双系统推荐 y> (y/n): " time_problem
@@ -81,6 +84,16 @@ if [[ "$time_problem" == "y" ]]; then
     sudo ntpdate time.windows.com
     sudo hwclock --localtime --systohc
 fi
+
+
+read -p "您是否需要安装 grub 开机界面, 原神主题 <双系统推荐 y> (y/n): " yuanshen
+if [[ "$yuanshen" == "y" ]]; then
+    echo "双系统会有时间不一致的问题，此项可以通过ntpdate和hwclock解决"
+    sudo apt install ntpdate -y
+    sudo ntpdate time.windows.com
+    sudo hwclock --localtime --systohc
+fi
+
 
 echo "基础配置已完成，系统将在5秒后重启，重启后驱动即可生效"
 sleep 5
