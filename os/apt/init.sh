@@ -34,7 +34,21 @@ case $DISTRO in
     ;;
 esac
 
+read -p "是否需要安装星火应用商店？<桌面版强烈推荐 >= 20.04 >(y/n): " install_star
+if [[ "$install_star" == "y" ]]; then
+    source <(curl -s ${download_url}/os/apt/spark.sh)
+fi 
 
+
+read -p "您是否需要安装Todesk远程控制？推荐安装一个，这样出错方便远程介入。(y/n): " install_todesk
+if [[ "$install_todesk" == "y" ]]; then
+    source <(curl -s ${download_url}/os/apt/todesk.sh)
+fi
+
+read -p "是否需要安装向日葵远程控制？此项与todesk二选一(y/n): " install_sun
+if [[ "$install_sun" == "y" ]]; then
+    wget -O $app_path/wechat.deb https://dw.oray.com/sunlogin/linux/SunloginClient_15.2.0.63064_amd64.deb
+fi
 
 if [[ "$VERSION" == "20.04" ]]; then
     echo "Ubuntu版本为20.04...."
@@ -97,16 +111,6 @@ if [[ "$sougou" == "y" ]]; then
     sudo apt install -f
     rm $app_path/sogou.deb
 fi
-
-read -p "您是否需要安装Todesk远程控制？推荐安装一个，这样出错方便远程介入。(y/n): " install_todesk
-if [[ "$install_todesk" == "y" ]]; then
-    source <(curl -s ${download_url}/os/apt/todesk.sh)
-fi
-
-read -p "是否需要安装向日葵远程控制？此项与todesk二选一(y/n): " install_sun
-if [[ "$install_sun" == "y" ]]; then
-    wget -O $app_path/wechat.deb https://dw.oray.com/sunlogin/linux/SunloginClient_15.2.0.63064_amd64.deb
-fi  
 
 read -p "是否需要安装微信？(y/n): " install_wechat
 if [[ "$install_wechat" == "y" ]]; then
