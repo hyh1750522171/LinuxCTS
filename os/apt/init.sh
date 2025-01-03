@@ -53,57 +53,6 @@ if [[ "$install_sun" == "y" ]]; then
     wget -O $app_path/wechat.deb https://dw.oray.com/sunlogin/linux/SunloginClient_15.2.0.63064_amd64.deb
 fi
 
-if [[ "$VERSION" == "20.04" ]]; then
-    echo "Ubuntu版本为20.04...."
-    echo "正在下载安装搜狗输入法"
-    wget -O $app_path/sogou.deb https://minetest.top/upload/sogoupinyin_4.2.1.145_amd64.deb
-    sudo apt install fcitx libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2 libgsettings-qt1 gnome-tweaks chrome-gnome-shell variety -y
-    sudo apt purge ibus* -y && sudo apt autopurge -y
-    sudo dpkg -i $app_path/sogou.deb
-    sudo apt install -f
-    echo "输入法已完成安装，现在我们需要手动启用它。搜狗基于fcitx框架，我们可以通过im-config这个工具来指定。"
-    echo "安装完成"
-    sleep 2
-    echo "请在弹出的窗口内选择确定，然后选是，并选择fcitx作为输入法框架，并按提示完成设置。"
-    sleep 10
-    im-config
-    echo "输入法已完成设置，重启后生效， 如果您是英语的环境，还需在重启后添加搜狗输入法作为键盘。"
-elif [[ "$VERSION" == "18.04" ]]; then
-    echo "Ubuntu版本为18.04，..."
-    echo "正在下载安装搜狗输入法"
-    wget -O $app_path/sogou.deb https://minetest.top/upload/sogoupinyin_4.2.1.145_amd64.deb
-    sudo apt install fcitx libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2 libgsettings-qt1 gnome-tweaks chrome-gnome-shell variety -y
-    sudo apt purge ibus* -y && sudo apt autopurge -y
-    sudo dpkg -i $app_path/sogou.deb
-    sudo apt install -f
-    echo "输入法已完成安装，现在我们需要手动启用它。搜狗基于fcitx框架，我们可以通过im-config这个工具来指定。"
-    echo "安装完成"
-    sleep 2
-    echo "请在弹出的窗口内选择确定，然后选是，并选择fcitx作为输入法框架，并按提示完成设置。"
-    sleep 10
-    im-config
-    echo "输入法已完成设置，重启后生效， 如果您是英语的环境，还需在重启后添加搜狗输入法作为键盘。"
-elif [[ "$VERSION" == "22.04" ]]; then
-    echo "Ubuntu版本是22.04，执行下载操作..."
-    echo "您的系统高于20.04，建议使用fcitx5作为中文输入法，正在安装..."
-    sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk2 gnome-tweaks chrome-gnome-shell variety -y
-    echo "安装完成"
-    sleep 2
-    echo "请在弹出的窗口内选择OK，然后选是，并选择fcitx5作为输入法框架，并按提示完成设置。"
-    sleep 10
-    im-config
-    echo "输入法已完成设置"
-elif [[ "$VERSION" == "24.04" ]]; then
-    echo "您的Ubuntu版本是24.04，执行下载操作..."
-    echo "您的系统高于20.04，建议使用fcitx5作为中文输入法，正在安装..."
-    sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk2 fcitx5-frontend-tmux gnome-tweaks chrome-gnome-shell variety -y
-    echo "请在弹出的窗口内选择是，并选择fcitx5作为输入法框架，并按提示完成设置。"
-    im-config
-    echo "输入法已完成设置，如果您的系统是英语环境，还需重启后添加键盘。"
-else
-    echo "Ubuntu版本是$VERSION，不需要执行任何操作。"
-fi
-
 read -p "是否需要安装搜狗输入法？(y/n): " sougou
 if [[ "$sougou" == "y" ]]; then
     echo "正在下载安装搜狗输入法"
