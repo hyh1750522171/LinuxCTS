@@ -36,7 +36,6 @@ NVIDIA_PRESENT=$(lspci | grep -i nvidia || true)
 if [[ -z "$NVIDIA_PRESENT" ]]; then
     
     echo -e "${RedBG} 未在设备上检测到 Nvidia 显卡设备 ${Font}"
-    exit
     # source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh)
 else
 # Check if nvidia-smi is available and working
