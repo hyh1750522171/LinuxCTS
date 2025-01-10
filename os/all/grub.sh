@@ -13,6 +13,4 @@ sudo echo GRUB_THEME=\"/usr/share/grub/themes/Sunday_cn/theme.txt\" >> /etc/defa
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 #6.重新启动计算机
-echo "主题已经安装完成，5秒后重启计算机以应用主题"
-sleep 5
-reboot
+echo "主题已经安装完成。请重新启动计算机以查看效果。"
