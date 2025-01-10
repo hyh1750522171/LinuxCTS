@@ -14,7 +14,7 @@ shanshuo2="\033[0m"
 Version=4.3.3.1
 package="spark-store_${Version}-fix3_amd64.deb" 
 package_url=https://gitee.com/spark-store-project/spark-store/releases/download/4.3.3.1-fix2
-yilai_url=https://gitee.com/muaimingjun/LinuxCTS/releases/download/v1.0.1/all.zip
+yilai_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main/app/all.zip
 
 
 OS="$(uname)"
