@@ -2,16 +2,6 @@
 
 Version=v4.7.2.0
 package="todesk-${Version}-amd64.deb" 
-Green="\033[32m"
-Red="\033[31m"
-YellowBG="\033[43;37m"
-Yellow="\033[33m"
-blue="\033[44;37m"
-GreenBG="\033[42;37m"
-RedBG="\033[41;37m"
-Font="\033[0m"
-shanshuo1="\033[5m"
-shanshuo2="\033[0m"
 
 OS="$(uname)"
 case $OS in
@@ -66,9 +56,12 @@ install_todesk(){
 gnome_check=$(ps -ef | grep gnome-session | grep -v grep)
 if [ -n "$gnome_check" ]; then
     install_todesk
+    echo -e "${Green}todesk 安装完成，5秒后返回...${Font}"
+    sleep 5
+    source <(curl -s ${download_url}/os/all/tools.sh)
     # 这里可以添加你想要在有GNOME桌面环境时执行的具体操作
 else
-    echo "当前没有GNOME桌面环境，无法安装Todesk。"
+    echo -e "${Red}当前没有GNOME桌面环境，无法安装Todesk。${Font}"
 fi
 
 

@@ -19,6 +19,7 @@ show_help() {
 is_root() {
   if [ "$(id -u)" -ne 0 ]; then
     judge "请以root用户运行此脚本"
+    exit
   fi
 }
 

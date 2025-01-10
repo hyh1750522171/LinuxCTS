@@ -162,8 +162,16 @@ else
                 exit
                 ;;
         esac
-	echo "系统现在将在 5 秒后重新启动！"
- 	sleep 5s
-        reboot
+        read -p "当前系统 安装完 Nvidia显卡驱动 需要重启？ (yes/no): " answer
+        if [[ "$answer" =~ ^[Yy][Ee][Ss]$ ]]; then
+            echo -e "\033[5;33m 当前系统 安装完 Nvidia显卡驱动 需要重启\033[0m"
+            echo -e "\033[5;33m 5秒之后系统将会, 重启..... \033[0m"
+            countdown_sleep 5
+            reboot
+        elif [[ "$answer" =~ ^[Nn][Oo]$ ]]; then
+            echo "取消系统重启"
+        else
+            echo "无效的输入，取消系统重启"
+        fi
     fi
 fi
