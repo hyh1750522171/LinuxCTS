@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-Green="\033[32m"
-Red="\033[31m"
-YellowBG="\033[43;37m"
-Yellow="\033[33m"
-blue="\033[44;37m"
-GreenBG="\033[42;37m"
-RedBG="\033[41;37m"
-Font="\033[0m"
-shanshuo1="\033[5m"
-shanshuo2="\033[0m"
 
 Version=4.3.3.1
 package="spark-store_${Version}-fix3_amd64.deb" 
@@ -73,9 +63,13 @@ install_spark(){
 gnome_check=$(ps -ef | grep gnome-session | grep -v grep)
 if [ -n "$gnome_check" ]; then
     install_spark
+    echo -e "${Green}星火应用商店安装完成，5秒后返回...${Font}"
+    sleep 5
+    source <(curl -s ${download_url}/os/all/tools.sh)
     # 这里可以添加你想要在有GNOME桌面环境时执行的具体操作
+
 else
-    echo "当前没有GNOME桌面环境，无法安装 星火应用商店 。"
+    echo -e "${Red}当前没有GNOME桌面环境，无法安装 星火应用商店 。${Font}"
 fi
 
 

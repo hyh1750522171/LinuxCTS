@@ -22,15 +22,16 @@ esac
 case $DISTRO in
     "ubuntu")
         echo -e "${Green}您的系统是  Ubuntu $VERSION, 系统代号是 $UBUNTU_CODENAME, 正在换源...${Font}"
-        if [[ "$VERSION" == "24.04" ]]; then
-            mv /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak
-            wget -O /etc/apt/sources.list.d/ubuntu.sources  https://mirrors.ustc.edu.cn/repogen/conf/ubuntu-https-4-$UBUNTU_CODENAME
-        else
-            sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
-            wget -O /etc/apt/sources.list  https://mirrors.ustc.edu.cn/repogen/conf/ubuntu-https-4-$UBUNTU_CODENAME
+        # if [[ "$VERSION" == "24.04" ]]; then
+        #     mv /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak
+        #     wget -O /etc/apt/sources.list.d/ubuntu.sources  https://mirrors.ustc.edu.cn/repogen/conf/ubuntu-https-4-$UBUNTU_CODENAME
+        # else
+        #     sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
+        #     wget -O /etc/apt/sources.list  https://mirrors.ustc.edu.cn/repogen/conf/ubuntu-https-4-$UBUNTU_CODENAME
             
-        fi
-        apt update && apt upgrade -y
+        # fi
+        # apt update && apt upgrade -y
+        source <(curl -s ${download_url}/os/apt/ustc-mirror.sh)
         echo -e "${Green}系统源已更换为中科大源${Font}"
         echo -e "${Green}正在安装基础软件${Font}"
         apt install curl git git-lfs build-essential ssh ntpdate -y
@@ -48,8 +49,8 @@ if [[ "$install_todesk" == "y" ]]; then
     source <(curl -s ${download_url}/os/apt/todesk.sh)
 fi
 
+# 检测到NVIDIA显卡设备
 echo -e "${Green}正在检查是否有 NVIDA 显卡设备...${Font}"
-# Detect if an Nvidia GPU is present
 NVIDIA_PRESENT=$(lspci | grep -i nvidia || true)
 
 # Only proceed with Nvidia-specific steps if an Nvidia device is detected
@@ -65,34 +66,17 @@ else
     fi
 fi  
 
-# read -p "是否需要安装向日葵远程控制？此项与todesk二选一(y/n): " install_sun
-# if [[ "$install_sun" == "y" ]]; then
-#     wget -O $app_path/SunloginClien.deb https://dw.oray.com/sunlogin/linux/SunloginClient_15.2.0.63064_amd64.deb
-#     sudo apt install -y $app_path/SunloginClien.deb
-# fi
+read -p "是否需要安装微信？(y/n): " install_wechat
+if [[ "$install_wechat" == "y" ]]; then
+    wget -O $app_path/wechat.deb https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb
+    sudo apt install -y $app_path/wechat.deb
+fi 
 
-# read -p "是否需要安装搜狗输入法？(y/n): " sougou
-# if [[ "$sougou" == "y" ]]; then
-#     echo "正在下载安装搜狗输入法"
-#     wget -O $app_path/sogou.deb https://minetest.top/upload/sogoupinyin_4.2.1.145_amd64.deb
-#     sudo apt install fcitx libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2 libgsettings-qt1 gnome-tweaks chrome-gnome-shell variety -y
-#     sudo apt purge ibus* -y && sudo apt autoremove -y
-#     sudo dpkg -i $app_path/sogou.deb
-#     sudo apt install -f
-#     rm $app_path/sogou.deb
-# fi
-
-# read -p "是否需要安装微信？(y/n): " install_wechat
-# if [[ "$install_wechat" == "y" ]]; then
-#     wget -O $app_path/wechat.deb https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb
-#     sudo apt install -y $app_path/wechat.deb
-# fi 
-
-# read -p "您是否需要安装QQ？(y/n): " install_qq
-# if [[ "$install_qq" == "y" ]]; then
-#     wget -O $app_path/qq.deb https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.13_241023_amd64_01.deb
-#     sudo apt install -y $app_path/qq.deb
-# fi
+read -p "您是否需要安装QQ？(y/n): " install_qq
+if [[ "$install_qq" == "y" ]]; then
+    wget -O $app_path/qq.deb https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.13_241023_amd64_01.deb
+    sudo apt install -y $app_path/qq.deb
+fi
 
 read -p "您是否需要解决双系统时间问题? <双系统推荐 y> (y/n): " time_problem
 if [[ "$time_problem" == "y" ]]; then
