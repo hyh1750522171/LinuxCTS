@@ -188,13 +188,13 @@ sudo bash -c 'cat <<EOF > /etc/docker/daemon.json
 		"https://hub.geekery.cn",
 		"https://ghcr.geekery.cn"
 	],
-   "runtimes": {
-       "nvidia": {
-           "path": "nvidia-container-runtime",
-           "runtimeArgs": []
-       }
-   },
-   "exec-opts": ["native.cgroupdriver=cgroupfs"]
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "exec-opts": ["native.cgroupdriver=cgroupfs"]
 }
 EOF'
 
