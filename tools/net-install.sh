@@ -39,7 +39,7 @@ else
 fi
 
 # wget -N --no-check-certificate https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/core-install.sh && chmod a+x core-install.sh
-source <(curl -s  https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/core-install.sh)
+source <(curl -s  ${download_url}/tools/core-install.sh)
 
 echo "============================================================"
 echo "=                                                          ="
