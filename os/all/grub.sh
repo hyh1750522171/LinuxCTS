@@ -2,7 +2,7 @@
 #!/usr/bin/env bash
 
 
-wget -O /tmp/Sunday-cn.tar.gz https://gitee.com/muaimingjun/LinuxCTS/raw/main/app/Sunday-cn.tar.gz
+wget -O /tmp/Sunday-cn.tar.gz ${download_url}/app/Sunday-cn.tar.gz
 sudo mkdir /usr/share/grub/themes
 sudo tar -zxvf /tmp/Sunday-cn.tar.gz -C /usr/share/grub/themes
 

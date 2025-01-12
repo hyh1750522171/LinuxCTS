@@ -131,7 +131,7 @@ case $num in
     systemctl reboot --firmware-setup
     ;;
 99)
-    # wget -N https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh && chmod +x linux.sh && bash linux.sh
+    # wget -N ${download_url}/linux.sh && chmod +x linux.sh && bash linux.sh
     source <(curl -s ${download_url}/linux.sh)
     ;;
 0)
