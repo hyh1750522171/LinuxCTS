@@ -63,6 +63,3 @@ if [ -n "$gnome_check" ]; then
 else
     echo -e "${Red}当前没有GNOME桌面环境，无法安装Todesk。${Font}"
 fi
-
-
-

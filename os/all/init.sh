@@ -91,7 +91,7 @@ headers(){
     header="${blue}=====================================================${Font}
 ${blue}=             LinuxCTS - 综合Linux脚本              =${Font}
 ${blue}=                                                   =${Font}
-${blue}=                当前版本 V2.6                      =${Font}
+${blue}=                当前版本 V0.3                      =${Font}
 ${blue}=            更新时间 2024年11月29日                =${Font}
 ${blue}=                bug 反馈                           =${Font}
 ${blue}= https://github.com/hyh1750522171/LinuxCTS/issues  =${Font}

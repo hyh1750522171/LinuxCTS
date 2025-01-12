@@ -40,7 +40,7 @@ install_spark(){
                 wget --no-check-certificate ${yilai_url} -O /tmp/all.zip
                 apt install -y unzip
                 unzip /tmp/all.zip -d /tmp/all
-                apt install -y /tmp/all/*.deb
+                apt install -y /tmp/all/all/*.deb
                 apt install -y /tmp/${package}
                 echo "星火应用商店安装完成"
                 ;;
@@ -71,5 +71,3 @@ if [ -n "$gnome_check" ]; then
 else
     echo -e "${Red}当前没有GNOME桌面环境，无法安装 星火应用商店 。${Font}"
 fi
-
-
