@@ -22,15 +22,6 @@ esac
 case $DISTRO in
     "ubuntu")
         echo -e "${Green}您的系统是  Ubuntu $VERSION, 系统代号是 $UBUNTU_CODENAME, 正在换源...${Font}"
-        # if [[ "$VERSION" == "24.04" ]]; then
-        #     mv /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak
-        #     wget -O /etc/apt/sources.list.d/ubuntu.sources  https://mirrors.ustc.edu.cn/repogen/conf/ubuntu-https-4-$UBUNTU_CODENAME
-        # else
-        #     sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
-        #     wget -O /etc/apt/sources.list  https://mirrors.ustc.edu.cn/repogen/conf/ubuntu-https-4-$UBUNTU_CODENAME
-            
-        # fi
-        # apt update && apt upgrade -y
         source <(curl -s ${download_url}/os/apt/ustc-mirror.sh)
         echo -e "${Green}系统源已更换为中科大源${Font}"
         echo -e "${Green}正在安装基础软件${Font}"
@@ -39,14 +30,23 @@ case $DISTRO in
 esac
 
 read -p "是否需要安装星火应用商店？桌面版强烈推荐 系统>= 20.04 >(y/n): " install_star
-if [[ "$install_star" == "y" ]]; then
+if [[ "$install_star" =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo -e "\033[5;33m 正在安装 星火应用商店....\033[0m"
     source <(curl -s ${download_url}/os/apt/spark.sh)
-fi 
-
+elif [[ "$install_star" =~ ^[Nn][Oo]$ ]]; then
+    echo "星火应用商店安装取消"
+else
+    echo "无效的输入，星火应用商店安装取消"
+fi
 
 read -p "您是否需要安装Todesk远程控制？推荐安装一个，这样出错方便远程介入。(y/n): " install_todesk
-if [[ "$install_todesk" == "y" ]]; then
+if [[ "$install_todesk" =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo -e "\033[5;33m 正在安装 Todesk 远程控制....\033[0m"
     source <(curl -s ${download_url}/os/apt/todesk.sh)
+elif [[ "$install_todesk" =~ ^[Nn][Oo]$ ]]; then
+    echo "Todesk远程控制安装取消"
+else
+    echo "无效的输入，Todesk远程控制安装取消"
 fi
 
 # 检测到NVIDIA显卡设备
@@ -57,41 +57,42 @@ NVIDIA_PRESENT=$(lspci | grep -i nvidia || true)
 if [[ -z "$NVIDIA_PRESENT" ]]; then
     
     echo -e "${RedBG} 未在设备上检测到 Nvidia 显卡设备 ${Font}"
-    # source <(curl -s https://gitee.com/muaimingjun/LinuxCTS/raw/main/linux.sh)
+    # source <(curl -s ${download_url}/linux.sh)
 else
     echo -e "${Green}检测到 Nvidia 显卡设备 ${Font}"
-    read -p "您是否需要安装NVIDIA显卡驱动？(y/n): " install_nvidia
-    if [[ "$install_nvidia" == "y" ]]; then
+    read -p "您是否需要安装NVIDIA显卡驱动？(yes/no): " install_nvidia
+    if [[ "$install_nvidia" =~ ^[Yy][Ee][Ss]$ ]]; then
+        echo -e "\033[5;33m 正在安装 Nvidia 显卡驱动...\033[0m"
         source <(curl -s ${download_url}/os/apt/nvidia-driver.sh)
+    elif [[ "$install_nvidia" =~ ^[Nn][Oo]$ ]]; then
+        echo "取消安装 Nvidia 显卡驱动"
+    else
+        echo "无效的输入，取消安装 Nvidia 显卡驱动"
     fi
 fi  
 
-read -p "是否需要安装微信？(y/n): " install_wechat
-if [[ "$install_wechat" == "y" ]]; then
-    wget -O $app_path/wechat.deb https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb
-    sudo apt install -y $app_path/wechat.deb
-fi 
+read -p "您是否需要解决双系统时间问题? <双系统推荐 y> (yes/no): " time_problem
 
-read -p "您是否需要安装QQ？(y/n): " install_qq
-if [[ "$install_qq" == "y" ]]; then
-    wget -O $app_path/qq.deb https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.13_241023_amd64_01.deb
-    sudo apt install -y $app_path/qq.deb
-fi
-
-read -p "您是否需要解决双系统时间问题? <双系统推荐 y> (y/n): " time_problem
-if [[ "$time_problem" == "y" ]]; then
-    echo "双系统会有时间不一致的问题，此项可以通过ntpdate和hwclock解决"
+if [[ "$time_problem" =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo -e "\033[5;33m 正在解决双系统时间问题....\033[0m"
     sudo apt install ntpdate -y
     sudo ntpdate time.windows.com
     sudo hwclock --localtime --systohc
+elif [[ "$time_problem" =~ ^[Nn][Oo]$ ]]; then
+    echo "取消"
+else
+    echo "无效的输入，取消"
 fi
-
 
 read -p "您是否需要安装 grub 开机界面, 原神主题 <双系统推荐 y> (y/n): " yuanshen
-if [[ "$yuanshen" == "y" ]]; then
+if [[ "$yuanshen" =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo -e "\033[5;33m 正在安装 grub 开机界面....\033[0m"
     source <(curl -s ${download_url}/os/all/grub.sh)
+elif [[ "$yuanshen" =~ ^[Nn][Oo]$ ]]; then
+    echo "grub 开机界面设置取消"
+else
+    echo "无效的输入，grub 开机界面设置取消"
 fi
-
 
 echo "基础配置已完成，系统将在5秒后重启，重启后驱动即可生效"
 sleep 5

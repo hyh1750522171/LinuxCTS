@@ -68,7 +68,7 @@ download_file(){
     rm -rf ${frps_home}
     mkdir -p ${frps_home}
     cd ${frps_home}
-    wget --no-check-certificate https://gitee.com/muaimingjun/LinuxCTS/raw/main/app/frp_${version}_linux_amd64.tar.gz
+    wget --no-check-certificate ${download_url}/app/frp_${version}_linux_amd64.tar.gz
     tar -zxvf frp_${version}_linux_amd64.tar.gz
     mv frp_${version}_linux_amd64/frps ${frps_home}
     rm -fr frp_${version}_linux_amd64.tar.gz
@@ -128,7 +128,7 @@ update_file(){
     rm -rf ${frps_home}
     mkdir -p ${frps_home}
     cd ${frps_home}
-    wget --no-check-certificate https://gitee.com/muaimingjun/LinuxCTS/raw/main/app/frp_${version}_linux_amd64.tar.gz
+    wget --no-check-certificate ${download_url}/app/frp_${version}_linux_amd64.tar.gz
     tar -zxvf frp_${version}_linux_amd64.tar.gz
     mv frp_${version}_linux_amd64/frps ${frps_home}
     mv ${frps_home}.ini ${frps_home}/frps.ini
@@ -266,8 +266,8 @@ start_frps(){
         systemctl status frps
         ;;
     9)
-        # curl -O -L https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/frpc.sh && chmod +x frpc.sh && bash frpc.sh
-        source <(curl -s  https://gitee.com/muaimingjun/LinuxCTS/raw/main/tools/frpc.sh)
+        # curl -O -L ${download_url}/tools/frpc.sh && chmod +x frpc.sh && bash frpc.sh
+        source <(curl -s  ${download_url}/tools/frpc.sh)
         ;;
     10)
         echo -e "\n${GreenBG}感谢使用！欢迎下次使用！${Font}\n" && exit
