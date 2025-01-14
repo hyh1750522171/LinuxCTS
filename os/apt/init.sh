@@ -29,7 +29,7 @@ case $DISTRO in
     ;;
 esac
 
-read -p "是否需要安装星火应用商店？桌面版强烈推荐 系统>= 20.04 >(y/n): " install_star
+read -p "是否需要安装星火应用商店？桌面版强烈推荐 系统>= 20.04 >(yes/no): " install_star
 if [[ "$install_star" =~ ^[Yy][Ee][Ss]$ ]]; then
     echo -e "\033[5;33m 正在安装 星火应用商店....\033[0m"
     source <(curl -s ${download_url}/os/apt/spark.sh)
@@ -39,7 +39,7 @@ else
     echo "无效的输入，星火应用商店安装取消"
 fi
 
-read -p "您是否需要安装Todesk远程控制？推荐安装一个，这样出错方便远程介入。(y/n): " install_todesk
+read -p "您是否需要安装Todesk远程控制？推荐安装一个，这样出错方便远程介入。(yes/no): " install_todesk
 if [[ "$install_todesk" =~ ^[Yy][Ee][Ss]$ ]]; then
     echo -e "\033[5;33m 正在安装 Todesk 远程控制....\033[0m"
     source <(curl -s ${download_url}/os/apt/todesk.sh)
@@ -71,7 +71,7 @@ else
     fi
 fi  
 
-read -p "您是否需要解决双系统时间问题? <双系统推荐 y> (yes/no): " time_problem
+read -p "您是否需要解决双系统时间问题? <双系统推荐 yes> (yes/no): " time_problem
 
 if [[ "$time_problem" =~ ^[Yy][Ee][Ss]$ ]]; then
     echo -e "\033[5;33m 正在解决双系统时间问题....\033[0m"
@@ -84,7 +84,7 @@ else
     echo "无效的输入，取消"
 fi
 
-read -p "您是否需要安装 grub 开机界面, 原神主题 <双系统推荐 y> (y/n): " yuanshen
+read -p "您是否需要安装 grub 开机界面, 原神主题 <双系统推荐 y> (yes/no): " yuanshen
 if [[ "$yuanshen" =~ ^[Yy][Ee][Ss]$ ]]; then
     echo -e "\033[5;33m 正在安装 grub 开机界面....\033[0m"
     source <(curl -s ${download_url}/os/all/grub.sh)
