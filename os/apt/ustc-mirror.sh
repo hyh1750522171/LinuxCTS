@@ -94,10 +94,13 @@ case $OS_TYPE in
             URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/${ID}-${PROTOCOL}-${IP_VERSION/*v/}-${VERSION_CODENAME}"
             CONFIG_FILE="/etc/apt/sources.list"        
         fi
+        apt update
+        exit 0
         ;;
     arch)
         URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/archlinux-${PROTOCOL}-${IP_VERSION/*v/}"
         CONFIG_FILE="/etc/pacman.d/mirrorlist"
+        exit 0
         ;;
 esac
 
