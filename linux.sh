@@ -4,6 +4,16 @@
 VERSION="1.0.0"
 LOG_FILE="/var/log/linuxcts.log"
 
+url=https://ifconfig.icu
+country=$(curl -s ${url}/country)
+if [[ $country == *"China"* ]]; then
+    download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
+else
+    download_url=https://raw.githubusercontent.com/hyh1750522171/LinuxCTS/main
+fi
+# 引用全局初始化脚本
+source <(curl -s ${download_url}/os/all/init.sh)
+
 # 初始化日志
 init_log() {
     mkdir -p $(dirname $LOG_FILE)
@@ -117,15 +127,6 @@ start_linux(){
     esac
 }
 
-url=https://ifconfig.icu
-country=$(curl -s ${url}/country)
-if [[ $country == *"China"* ]]; then
-    download_url=https://gitee.com/muaimingjun/LinuxCTS/raw/main
-else
-    download_url=https://raw.githubusercontent.com/hyh1750522171/LinuxCTS/main
-fi
-# 引用全局初始化脚本
-source <(curl -s ${download_url}/os/all/init.sh)
 check_root
 init_log
 echo "正在检测机器所在国家和地区...请稍后...." | tee -a $LOG_FILE

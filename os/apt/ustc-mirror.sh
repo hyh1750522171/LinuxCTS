@@ -78,17 +78,29 @@ fi
 source /etc/os-release
 VERSION_CODENAME=$VERSION_CODENAME
 ID=$ID
+#  判断是不是 x86_64 架构
 
 case $OS_TYPE in
     ubuntu|debian)
-        URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/${ID}-${PROTOCOL}-${IP_VERSION/*v/}-${VERSION_CODENAME}"
-        CONFIG_FILE="/etc/apt/sources.list"
+        if [ "$(uname -m)" == "x86_64" ]; then
+            URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/${ID}-${PROTOCOL}-${IP_VERSION/*v/}-${VERSION_CODENAME}"
+            CONFIG_FILE="/etc/apt/sources.list"
+        #  判断是不是 aarch64 架构并且是 Ubuntu
+        elif [ "$(uname -m)" == "aarch64" ] && [ $OS_TYPE == "ubuntu" ]; then
+            sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' \
+                -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' \
+                /etc/apt/sources.list
+        else
+            judge "此脚本仅支持 x86_64 和 aarch64 架构"        
+        fi
         ;;
     arch)
         URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/archlinux-${PROTOCOL}-${IP_VERSION/*v/}"
         CONFIG_FILE="/etc/pacman.d/mirrorlist"
         ;;
 esac
+
+
 
 TEMP_FILE=$(mktemp)
 curl -s -o "$TEMP_FILE" "$URL"
