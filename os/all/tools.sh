@@ -105,7 +105,7 @@ case $num in
     source <(curl -s ${download_url}/tools/status.sh)
     ;;
 21)
-    source <(curl -s ${download_url}/os/all/theme.sh)
+    source <(curl -s ${download_url}/os/all/grub.sh)
     ;;
 22)
     source <(curl -s ${download_url}/tools/dkzf.sh)
