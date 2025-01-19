@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -euxo pipefail
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
@@ -87,9 +88,7 @@ case $OS_TYPE in
             CONFIG_FILE="/etc/apt/sources.list"
         #  判断是不是 aarch64 架构并且是 Ubuntu
         elif [ "$(uname -m)" == "aarch64" ] && [ $OS_TYPE == "ubuntu" ]; then
-            sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' \
-                -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' \
-                /etc/apt/sources.list
+            sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
         else
             judge "此脚本仅支持 x86_64 和 aarch64 架构"        
         fi
