@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# 版本信息
-VERSION="1.0.0"
-LOG_FILE="/var/log/linuxcts.log"
-
 url=https://ifconfig.icu
 country=$(curl -s ${url}/country)
 if [[ $country == *"China"* ]]; then
@@ -14,16 +10,9 @@ fi
 # 引用全局初始化脚本
 source <(curl -s ${download_url}/os/all/init.sh)
 
-# 初始化日志
-init_log() {
-    mkdir -p $(dirname $LOG_FILE)
-    echo "=== LinuxCTS Script v$VERSION ===" >> $LOG_FILE
-    echo "Start Time: $(date)" >> $LOG_FILE
-}
-
 # 错误处理
 handle_error() {
-    echo -e "${RedBG}Error: $1${Font}" | tee -a $LOG_FILE
+    echo -e "${RedBG}Error: $1${Font}"
     exit 1
 }
 
@@ -33,32 +22,6 @@ check_command() {
         handle_error "$1 command not found"
     fi
 }
-
-
-#安装依赖
-sys_install(){
-    echo -e "${RedBG}检查系统依赖...${Font}" | tee -a $LOG_FILE
-    
-    # 安装wget
-    if ! type wget >/dev/null 2>&1; then
-        echo -e "${RedBG}wget 未安装，准备安装！${Font}" | tee -a $LOG_FILE
-        if ! apt-get install -y wget &>> $LOG_FILE; then
-            handle_error "Failed to install wget"
-        fi
-        echo -e "${Green}wget 安装成功${Font}" | tee -a $LOG_FILE
-    fi
-
-    # 安装curl
-    if ! type curl >/dev/null 2>&1; then
-        echo -e "${RedBG}curl 未安装，准备安装！${Font}" | tee -a $LOG_FILE
-        if ! apt-get install -y curl &>> $LOG_FILE; then
-            handle_error "Failed to install curl"
-        fi
-        echo -e "${Green}curl 安装成功${Font}" | tee -a $LOG_FILE
-    fi
-}
-
-
 
 #脚本菜单
 start_linux(){
@@ -128,10 +91,8 @@ start_linux(){
 }
 
 check_root
-init_log
-echo "正在检测机器所在国家和地区...请稍后...." | tee -a $LOG_FILE
+echo "正在检测机器所在国家和地区...请稍后...." 
 check_command curl
 check_command wget
-sys_install
 echo
 start_linux
