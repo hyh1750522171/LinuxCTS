@@ -84,19 +84,15 @@ VERSION_ID=$VERSION_ID
 
 case $OS_TYPE in
     ubuntu|debian)
-        if [ "$(uname -m)" == "x86_64" ]; then
-            URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/${ID}-${PROTOCOL}-${IP_VERSION/*v/}-${VERSION_CODENAME}"
-            CONFIG_FILE="/etc/apt/sources.list"
-        #  判断是不是 aarch64 架构并且是 Ubuntu
-        elif [ "$(uname -m)" == "aarch64" ] && [ $OS_TYPE == "ubuntu" ]; then
-            if [ $VERSION_ID == "24.04" ]; then
+        if [ "$(uname -m)" != "x86_64" ]; then
+            if [ $OS_TYPE == "ubuntu" ] && [ $VERSION_ID == "24.04" ]; then
                 sed -i 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
-            else
+            else 
                 sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
             fi
-            exit 0
         else
-            judge "此脚本仅支持 x86_64 和 aarch64 架构"        
+            URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/${ID}-${PROTOCOL}-${IP_VERSION/*v/}-${VERSION_CODENAME}"
+            CONFIG_FILE="/etc/apt/sources.list"        
         fi
         ;;
     arch)
