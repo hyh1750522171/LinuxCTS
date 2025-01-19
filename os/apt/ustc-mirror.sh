@@ -81,6 +81,14 @@ VERSION_CODENAME=$VERSION_CODENAME
 ID=$ID
 VERSION_ID=$VERSION_ID
 #  判断是不是 x86_64 架构
+download_source_list() {
+    TEMP_FILE=$(mktemp)
+    curl -s -o "$TEMP_FILE" "$URL"
+    judge "Curl 命令执行"
+
+    mv "$TEMP_FILE" "$CONFIG_FILE"
+    judge "更新配置文件"
+}
 
 case $OS_TYPE in
     ubuntu|debian)
@@ -92,26 +100,18 @@ case $OS_TYPE in
             fi
         else
             URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/${ID}-${PROTOCOL}-${IP_VERSION/*v/}-${VERSION_CODENAME}"
-            CONFIG_FILE="/etc/apt/sources.list"        
+            CONFIG_FILE="/etc/apt/sources.list"
+            download_source_list      
         fi
-        apt update
-        exit 0
         ;;
     arch)
         URL="${PROTOCOL}://mirrors.ustc.edu.cn/repogen/conf/archlinux-${PROTOCOL}-${IP_VERSION/*v/}"
         CONFIG_FILE="/etc/pacman.d/mirrorlist"
-        exit 0
+        download_source_list
         ;;
 esac
 
 
-
-TEMP_FILE=$(mktemp)
-curl -s -o "$TEMP_FILE" "$URL"
-judge "Curl 命令执行"
-
-mv "$TEMP_FILE" "$CONFIG_FILE"
-judge "更新配置文件"
 
 if [ "$OS_TYPE" == "ubuntu" ] || [ "$OS_TYPE" == "debian" ]; then
     apt-get update
