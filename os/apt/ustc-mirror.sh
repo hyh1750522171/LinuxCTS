@@ -89,6 +89,7 @@ case $OS_TYPE in
         #  判断是不是 aarch64 架构并且是 Ubuntu
         elif [ "$(uname -m)" == "aarch64" ] && [ $OS_TYPE == "ubuntu" ]; then
             sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+            exit 0
         else
             judge "此脚本仅支持 x86_64 和 aarch64 架构"        
         fi
