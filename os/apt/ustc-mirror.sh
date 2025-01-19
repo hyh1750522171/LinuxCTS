@@ -1,8 +1,9 @@
 #!/bin/bash
 
-set -euxo pipefail
+#set -euxo pipefail
 GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
+YellowBG="\033[43;37m"
 Font="\033[0m"
 OK="[OK]"
 Error="[ERROR]"
@@ -92,6 +93,8 @@ download_source_list() {
 
 case $OS_TYPE in
     ubuntu|debian)
+        echo -e "${GreenBG}正在进行换中科大镜像源....${Font}"
+        sleep 1
         if [ "$(uname -m)" != "x86_64" ]; then
             if [ $OS_TYPE == "ubuntu" ] && [ $VERSION_ID == "24.04" ]; then
                 sed -i 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
