@@ -79,6 +79,7 @@ fi
 source /etc/os-release
 VERSION_CODENAME=$VERSION_CODENAME
 ID=$ID
+VERSION_ID=$VERSION_ID
 #  判断是不是 x86_64 架构
 
 case $OS_TYPE in
@@ -88,7 +89,11 @@ case $OS_TYPE in
             CONFIG_FILE="/etc/apt/sources.list"
         #  判断是不是 aarch64 架构并且是 Ubuntu
         elif [ "$(uname -m)" == "aarch64" ] && [ $OS_TYPE == "ubuntu" ]; then
-            sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+            if [ $VERSION_ID == "24.04" ]; then
+                sed -i 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
+            else
+                sed -i -e 's@//ports.ubuntu.com/\? @//ports.ubuntu.com/ubuntu-ports @g' -e 's@//ports.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+            fi
             exit 0
         else
             judge "此脚本仅支持 x86_64 和 aarch64 架构"        
