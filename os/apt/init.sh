@@ -1,7 +1,41 @@
 #!/usr/bin/env bash
 
+# 初始化日志
+init_log() {
+    mkdir -p $(dirname $LOG_FILE)
+    echo "=== System Init Script v$VERSION ===" >> $LOG_FILE
+    echo "Start Time: $(date)" >> $LOG_FILE
+}
+
+# 错误处理
+handle_error() {
+    echo -e "${RedBG}Error: $1${Font}" | tee -a $LOG_FILE
+    exit 1
+}
+
+# 检查命令是否存在
+check_command() {
+    if ! command -v $1 &> /dev/null; then
+        handle_error "$1 command not found"
+    fi
+}
+
+# 验证输入
+validate_input() {
+    if [[ ! "$1" =~ ^[Yy][Ee][Ss]$|^[Nn][Oo]$ ]]; then
+        echo "Invalid input, please enter yes or no" | tee -a $LOG_FILE
+        return 1
+    fi
+    return 0
+}
+
+# 初始化
+init_log
+check_command curl
+check_command apt-get
+
 app_path=/tmp/app
-mkdir -p $app_path  
+mkdir -p $app_path || handle_error "Failed to create app directory"
 # Detect OS
 OS="$(uname)"
 case $OS in
@@ -21,11 +55,21 @@ esac
 # 更换系统源
 case $DISTRO in
     "ubuntu")
-        echo -e "${Green}您的系统是  Ubuntu $VERSION, 系统代号是 $UBUNTU_CODENAME, 正在换源...${Font}"
-        source <(curl -s ${download_url}/os/apt/ustc-mirror.sh)
-        echo -e "${Green}系统源已更换为中科大源${Font}"
-        echo -e "${Green}正在安装基础软件${Font}"
-        apt install curl git git-lfs build-essential ssh ntpdate -y
+        echo -e "${Green}您的系统是  Ubuntu $VERSION, 系统代号是 $UBUNTU_CODENAME, 正在换源...${Font}" | tee -a $LOG_FILE
+        if ! source <(curl -fsSL ${download_url}/os/apt/ustc-mirror.sh); then
+            handle_error "Failed to update apt sources"
+        fi
+        echo -e "${Green}系统源已更换为中科大源${Font}" | tee -a $LOG_FILE
+        
+        # 验证源是否更新成功
+        if ! apt-get update &>> $LOG_FILE; then
+            handle_error "Failed to update package lists"
+        fi
+        
+        echo -e "${Green}正在安装基础软件${Font}" | tee -a $LOG_FILE
+        if ! apt-get install -y curl git git-lfs build-essential ssh ntpdate &>> $LOG_FILE; then
+            handle_error "Failed to install base packages"
+        fi
     ;;
 esac
 
@@ -59,15 +103,26 @@ if [[ -z "$NVIDIA_PRESENT" ]]; then
     echo -e "${RedBG} 未在设备上检测到 Nvidia 显卡设备 ${Font}"
     # source <(curl -s ${download_url}/linux.sh)
 else
-    echo -e "${Green}检测到 Nvidia 显卡设备 ${Font}"
+    echo -e "${Green}检测到 Nvidia 显卡设备 ${Font}" | tee -a $LOG_FILE
     read -p "您是否需要安装NVIDIA显卡驱动？(yes/no): " install_nvidia
+    if ! validate_input "$install_nvidia"; then
+        echo "取消安装 Nvidia 显卡驱动" | tee -a $LOG_FILE
+        return
+    fi
+    
     if [[ "$install_nvidia" =~ ^[Yy][Ee][Ss]$ ]]; then
-        echo -e "\033[5;33m 正在安装 Nvidia 显卡驱动...\033[0m"
-        source <(curl -s ${download_url}/os/apt/nvidia-driver.sh)
-    elif [[ "$install_nvidia" =~ ^[Nn][Oo]$ ]]; then
-        echo "取消安装 Nvidia 显卡驱动"
+        echo -e "\033[5;33m 正在安装 Nvidia 显卡驱动...\033[0m" | tee -a $LOG_FILE
+        if ! source <(curl -fsSL ${download_url}/os/apt/nvidia-driver.sh); then
+            handle_error "Failed to install NVIDIA driver"
+        fi
+        
+        # 验证驱动安装
+        if ! nvidia-smi &>> $LOG_FILE; then
+            handle_error "NVIDIA driver installation verification failed"
+        fi
+        echo -e "${Green}NVIDIA 驱动安装成功${Font}" | tee -a $LOG_FILE
     else
-        echo "无效的输入，取消安装 Nvidia 显卡驱动"
+        echo "取消安装 Nvidia 显卡驱动" | tee -a $LOG_FILE
     fi
 fi  
 
@@ -94,6 +149,20 @@ else
     echo "无效的输入，grub 开机界面设置取消"
 fi
 
-echo "基础配置已完成，系统将在5秒后重启，重启后驱动即可生效"
-sleep 5
-sudo reboot
+echo -e "${Green}基础配置已完成${Font}" | tee -a $LOG_FILE
+read -p "系统需要重启以使更改生效，是否立即重启？(yes/no): " reboot_now
+if ! validate_input "$reboot_now"; then
+    echo "取消重启" | tee -a $LOG_FILE
+    exit 0
+fi
+
+if [[ "$reboot_now" =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo -e "${Yellow}系统将在5秒后重启...${Font}" | tee -a $LOG_FILE
+    echo "按 Ctrl+C 取消重启" | tee -a $LOG_FILE
+    sleep 5
+    if ! sudo reboot; then
+        handle_error "Failed to reboot system"
+    fi
+else
+    echo "取消重启，请手动重启系统以使更改生效" | tee -a $LOG_FILE
+fi
