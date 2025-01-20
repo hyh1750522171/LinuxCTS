@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "正在检测机器所在国家和地区...请稍后...." 
+sleep 1
 url=https://ifconfig.icu
 country=$(curl -s ${url}/country)
 if [[ $country == *"China"* ]]; then
@@ -9,19 +11,6 @@ else
 fi
 # 引用全局初始化脚本
 source <(curl -s ${download_url}/os/all/init.sh)
-
-# 错误处理
-handle_error() {
-    echo -e "${RedBG}Error: $1${Font}"
-    exit 1
-}
-
-# 检查命令是否存在
-check_command() {
-    if ! command -v $1 &> /dev/null; then
-        handle_error "$1 command not found"
-    fi
-}
 
 #脚本菜单
 start_linux(){
@@ -91,8 +80,7 @@ start_linux(){
 }
 
 check_root
-echo "正在检测机器所在国家和地区...请稍后...." 
-check_command curl
-check_command wget
+install curl
+install wget
 echo
 start_linux
