@@ -33,6 +33,54 @@ ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print 
 ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')  # 获取IP地址
 sysarch="$(uname -m)" # 获取系统架构
 
+#核心文件
+get_opsy(){
+    [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
+    [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
+    [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
+}
+
+#变量引用
+opsy=$( get_opsy )  # 获取系统版本
+cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )  # 获取CPU核心数
+# tram=$( free -m | awk '/Mem|内存/ {print $2}' )
+# uram=$( free -m | awk '/Mem|内存/ {print $3}' )
+tram=$( awk '/MemTotal/{total=$2;unit=$3;if(unit=="kB"){total/=1024;}else if(unit=="bytes"){total/=(1024*1024);}print int(total)}' /proc/meminfo )  # 获取系统内存
+uram=$( awk '/MemTotal/{total=$2;unit=$3;if(unit=="kB"){total/=1024;}else if(unit=="bytes"){total/=(1024*1024);}print int(total)}' /proc/meminfo )  # 获取系统内存
+ipaddr=$(curl -s myip.ipip.net | awk -F ' ' '{print $2}' | awk -F '：' '{print $2}')  # 获取IP地址
+ipdz=$(curl -s myip.ipip.net | awk -F '：' '{print $3}')  # 获取IP地址
+sysarch="$(uname -m)" # 获取系统架构
+
+# Trap终止信号捕获
+trap "Global_TrapSigExit_Sig1" 1
+trap "Global_TrapSigExit_Sig2" 2
+trap "Global_TrapSigExit_Sig3" 3
+trap "Global_TrapSigExit_Sig15" 15
+
+# Trap终止信号1 - 处理
+Global_TrapSigExit_Sig1() {
+    echo -e "\n\n${Error}Caught Signal SIGHUP, Exiting ...\n"
+    exit
+}
+
+# Trap终止信号2 - 处理 (Ctrl+C)
+Global_TrapSigExit_Sig2() {
+    echo -e "\n\n${Error}Caught Signal SIGINT (or Ctrl+C), Exiting ...\n"
+    exit
+}
+
+# Trap终止信号3 - 处理
+Global_TrapSigExit_Sig3() {
+    echo -e "\n\n${Error}Caught Signal SIGQUIT, Exiting ...\n"
+    exit
+}
+
+# Trap终止信号15 - 处理 (进程被杀)
+Global_TrapSigExit_Sig15() {
+    echo -e "\n\n${Error}Caught Signal SIGTERM, Exiting ...\n"
+    exit
+}
+
 #检查账号
 check_root(){
 	if [[ $EUID != 0 ]];then

@@ -129,7 +129,7 @@ echo -e "系统架构       : ${SKYBLUE}$arch ($lbit Bit)${PLAIN}"
 echo -e "系统内核       : ${SKYBLUE}$kern${PLAIN}"
 echo -e "服务器IP       : ${SKYBLUE}$IP${PLAIN}"
 echo -e "机房位置       : ${SKYBLUE}$IPaddr${PLAIN}"
-echo -e "虚拟化平台     : ${SKYBLUE}$virtual${PLAIN}"
+echo -e "虚拟化平台     : ${SKYBLUE}$virtual 虚拟化${PLAIN}"
 
 next
 io1=$( io_test )
