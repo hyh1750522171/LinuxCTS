@@ -112,6 +112,10 @@ case $num in
     ;;
 24)
     install_docker
+    # 普通用户也可以使用docker
+    # sudo groupadd docker
+    # sudo gpasswd -a ${USER} docker
+    # sudo chmod 666 /var/run/docker.sock
     ;;
 26)
     source <(curl -s ${download_url}/os/apt/nvidia-driver.sh)
